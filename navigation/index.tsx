@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -41,7 +41,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="CheatSheet" component={CheatSheet} options={{ title: "Cheat Sheet" }} />
+        <Stack.Screen name="CheatSheet" component={CheatSheet} options={{ title: "", headerShown: false }} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -60,24 +60,26 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Games"
       screenOptions={{
+        tabBarStyle: { borderTopWidth: 0, elevation: 0 },
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
         name="Games"
         component={GamesScreen}
         options={({ navigation }: RootTabScreenProps<'Games'>) => ({
-          title: 'Games',
+          title: "",
+          headerStyle: { shadowOpacity: 0, elevation: 0 },
           tabBarIcon: ({ color }) => <TabBarIcon name="gamepad" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('CheatSheet')}
               style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
+                opacity: pressed ? 0.5 : 1
               })}>
-              <FontAwesome
-                name="eye-slash"
-                size={25}
-                color={Colors[colorScheme].text}
+              <MaterialCommunityIcons
+                name="cards-playing-spade-multiple"
+                size={35}
+                color={Colors[colorScheme].tabIconDefault}
                 style={{ marginRight: 15 }}
               />
             </Pressable>
@@ -88,7 +90,8 @@ function BottomTabNavigator() {
         name="Preferences"
         component={PreferencesScreen}
         options={{
-          title: 'Preferences',
+          title: "",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
         }}
       />
@@ -103,5 +106,5 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={40} style={{ marginBottom: -10 }} {...props} />;
 }
