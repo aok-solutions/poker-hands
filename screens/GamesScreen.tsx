@@ -15,10 +15,10 @@ export default function GamesScreen({ navigation }: RootTabScreenProps<'Games'>)
         backgroundStyle={{
           height: 300,
         }}
-        footnoteText="Multiple choices, so pick the right one!"
+        footnoteText="Select the possible hand combinations!"
         resizeMode="cover"
         source={nameThatHandImage}
-        onPress={() => {}}
+        onPress={() => navigation.navigate('NameThatHandGame')}
       />
     </View>
   );

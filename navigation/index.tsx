@@ -12,10 +12,11 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import CheatSheet from '../screens/CheatSheet';
+import CheatSheetModal from '../screens/CheatSheetModal';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import GamesScreen from '../screens/GamesScreen';
 import PreferencesScreen from '../screens/PreferencesScreen';
+import NameThatHandGame from "../screens/games/NameThatHandGame";
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -36,12 +37,41 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const colorScheme = useColorScheme();
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: Colors[colorScheme].tint,
+        headerShadowVisible: false,
+        headerBackTitleVisible: false,
+      }}
+    >
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="NameThatHandGame"
+        component={NameThatHandGame}
+        options={({ navigation }: RootTabScreenProps<'NameThatHandGame'>) => ({
+          title: "",
+          headerStyle: { shadowOpacity: 0, elevation: 0 },
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('CheatSheetModal')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1
+              })}>
+              <MaterialCommunityIcons
+                name="cards-playing-spade-multiple"
+                size={35}
+                color={Colors[colorScheme].tabIconDefault}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
+      />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="CheatSheet" component={CheatSheet} options={{ title: "", headerShown: false }} />
+        <Stack.Screen name="CheatSheetModal" component={CheatSheetModal} options={{ title: "", headerShown: false }} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -66,25 +96,11 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Games"
         component={GamesScreen}
-        options={({ navigation }: RootTabScreenProps<'Games'>) => ({
+        options={{
           title: "",
           headerStyle: { shadowOpacity: 0, elevation: 0 },
           tabBarIcon: ({ color }) => <TabBarIcon name="gamepad" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('CheatSheet')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1
-              })}>
-              <MaterialCommunityIcons
-                name="cards-playing-spade-multiple"
-                size={35}
-                color={Colors[colorScheme].tabIconDefault}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
+        }}
       />
       <BottomTab.Screen
         name="Preferences"

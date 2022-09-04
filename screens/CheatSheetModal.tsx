@@ -4,7 +4,7 @@ import { Image, Platform, StyleSheet } from 'react-native';
 import { View } from '../components/Themed';
 import pokerHands from "../assets/images/poker-hands.png"
 
-export default function CheatSheet() {
+export default function CheatSheetModal() {
   return (
     <View style={styles.container}>
       <Image source={pokerHands} style={{ width: 300, height: 650 }} />
