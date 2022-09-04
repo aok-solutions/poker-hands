@@ -53,7 +53,6 @@ import JackSpades from "../assets/images/cards/Jack.Spades.svg"
 import QueenSpades from "../assets/images/cards/Queen.Spades.svg"
 import KingSpades from "../assets/images/cards/King.Spades.svg"
 import AceSpades from "../assets/images/cards/Ace.Spades.svg"
-import {View} from "./Themed";
 
 const SIZE = "20%"
 
@@ -85,7 +84,7 @@ export enum Rank {
   Ace
 }
 
-const deck = new Map([
+export const pokerCards = new Map([
   [Suit.Clubs, new Map(
     [
       [Rank.Two, <TwoClubs width={SIZE} height={SIZE} />],
@@ -157,5 +156,5 @@ const deck = new Map([
 ])
 
 export const Card = (props: CardProps) => {
-  return deck.get(props.suit).get(props.rank)
+  return pokerCards.get(props.suit).get(props.rank)
 }
