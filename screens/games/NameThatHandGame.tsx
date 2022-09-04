@@ -18,8 +18,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 80,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
 });
