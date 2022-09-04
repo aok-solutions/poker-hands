@@ -57,9 +57,9 @@ import AceSpades from "../assets/images/cards/Ace.Spades.svg"
 const SIZE = "20%"
 
 type CardProps = {
-  rank: Rank;
-  suit: Suit;
-};
+  rank: Rank
+  suit: Suit
+}
 
 export enum Suit {
   Spades,
@@ -85,8 +85,9 @@ export enum Rank {
 }
 
 export const pokerCards = new Map([
-  [Suit.Clubs, new Map(
-    [
+  [
+    Suit.Clubs,
+    new Map([
       [Rank.Two, <TwoClubs width={SIZE} height={SIZE} />],
       [Rank.Three, <ThreeClubs width={SIZE} height={SIZE} />],
       [Rank.Four, <FourClubs width={SIZE} height={SIZE} />],
@@ -102,8 +103,9 @@ export const pokerCards = new Map([
       [Rank.Ace, <AceClubs width={SIZE} height={SIZE} />]
     ])
   ],
-  [Suit.Diamonds, new Map(
-    [
+  [
+    Suit.Diamonds,
+    new Map([
       [Rank.Two, <TwoDiamonds width={SIZE} height={SIZE} />],
       [Rank.Three, <ThreeDiamonds width={SIZE} height={SIZE} />],
       [Rank.Four, <FourDiamonds width={SIZE} height={SIZE} />],
@@ -119,8 +121,9 @@ export const pokerCards = new Map([
       [Rank.Ace, <AceDiamonds width={SIZE} height={SIZE} />]
     ])
   ],
-  [Suit.Hearts, new Map(
-    [
+  [
+    Suit.Hearts,
+    new Map([
       [Rank.Two, <TwoHearts width={SIZE} height={SIZE} />],
       [Rank.Three, <ThreeHearts width={SIZE} height={SIZE} />],
       [Rank.Four, <FourHearts width={SIZE} height={SIZE} />],
@@ -136,8 +139,9 @@ export const pokerCards = new Map([
       [Rank.Ace, <AceHearts width={SIZE} height={SIZE} />]
     ])
   ],
-  [Suit.Spades, new Map(
-    [
+  [
+    Suit.Spades,
+    new Map([
       [Rank.Two, <TwoSpades width={SIZE} height={SIZE} />],
       [Rank.Three, <ThreeSpades width={SIZE} height={SIZE} />],
       [Rank.Four, <FourSpades width={SIZE} height={SIZE} />],

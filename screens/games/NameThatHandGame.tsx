@@ -1,8 +1,8 @@
-import * as React from "react";
-import {useEffect, useState} from "react";
-import {StyleSheet} from "react-native";
-import {View} from "../../components/Themed";
-import {Card, pokerCards, Rank, Suit} from "../../components/Card";
+import * as React from "react"
+import { useEffect, useState } from "react"
+import { StyleSheet } from "react-native"
+import { View } from "../../components/Themed"
+import { Card, pokerCards, Rank, Suit } from "../../components/Card"
 
 const fullDeck = (): Card[] => {
   let deck: Card[] = []
@@ -12,14 +12,14 @@ const fullDeck = (): Card[] => {
     })
   })
 
-  return deck;
+  return deck
 }
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+    let j = Math.floor(Math.random() * (i + 1)) // random index from 0 to i
 
-    [array[i], array[j]] = [array[j], array[i]];
+    ;[array[i], array[j]] = [array[j], array[i]]
   }
 
   return array
@@ -38,12 +38,8 @@ export default function NameThatHandGame() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.community}>
-        {communityCards}
-      </View>
-      <View style={styles.hole}>
-        {holeCards}
-      </View>
+      <View style={styles.community}>{communityCards}</View>
+      <View style={styles.hole}>{holeCards}</View>
     </View>
   )
 }
@@ -52,18 +48,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    flexDirection: 'column',
+    flexDirection: "column"
   },
   community: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-evenly',
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-evenly"
   },
   hole: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "center"
   }
-});
+})
