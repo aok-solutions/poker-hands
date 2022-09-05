@@ -54,7 +54,7 @@ import QueenSpades from "../assets/images/cards/Queen.Spades.svg"
 import KingSpades from "../assets/images/cards/King.Spades.svg"
 import AceSpades from "../assets/images/cards/Ace.Spades.svg"
 
-const SIZE = "20%"
+const SIZE = "100%"
 
 type CardProps = {
   rank: Rank

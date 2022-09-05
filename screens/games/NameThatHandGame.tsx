@@ -1,7 +1,6 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
-import { StyleSheet } from "react-native"
-import { View } from "../../components/Themed"
+import { Text, View, StyleSheet, Pressable } from "react-native"
 import { Card, pokerCards, Rank, Suit } from "../../components/Card"
 
 const fullDeck = (): Card[] => {
@@ -30,6 +29,8 @@ export default function NameThatHandGame() {
   const [communityCards, setCommunityCards] = useState<Card[]>([])
   const [holeCards, setHoleCards] = useState<Card[]>([])
 
+  const shuffleDeck = () => setDeck(shuffle(fullDeck()))
+
   useEffect(() => {
     setDeck(shuffle(deck))
     setHoleCards(deck.splice(0, 2))
@@ -40,6 +41,11 @@ export default function NameThatHandGame() {
     <View style={styles.container}>
       <View style={styles.community}>{communityCards}</View>
       <View style={styles.hole}>{holeCards}</View>
+      <View style={{ flex: 4, justifyContent: "center", alignItems: "center" }}>
+        <Pressable style={styles.button} onPress={() => shuffleDeck()}>
+          <Text style={styles.buttonLabel}>Deal Cards</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -47,19 +53,36 @@ export default function NameThatHandGame() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
-    flexDirection: "column"
+    paddingHorizontal: 30,
+    paddingVertical: 80,
+    flexDirection: "column",
+    backgroundColor: "white"
   },
   community: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-evenly"
+    justifyContent: "flex-start",
+    width: 65
   },
   hole: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "center"
+    justifyContent: "flex-start",
+    width: 65
+  },
+  button: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderRadius: 6,
+    backgroundColor: "oldlace",
+    marginHorizontal: "1%",
+    marginBottom: 6,
+    minWidth: "48%",
+    textAlign: "center"
+  },
+  buttonLabel: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "coral"
   }
 })
