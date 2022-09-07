@@ -71,4 +71,18 @@ describe("PokerHand.getHands", () => {
       expect(getHands(cards)).toContain(Hand.FourOfAKind)
     })
   })
+
+  describe("with five cards of the same suit", () => {
+    let cards = [
+      <Card rank={Rank.Two} suit={Suit.Spades} />,
+      <Card rank={Rank.King} suit={Suit.Spades} />,
+      <Card rank={Rank.Jack} suit={Suit.Spades} />,
+      <Card rank={Rank.Eight} suit={Suit.Spades} />,
+      <Card rank={Rank.Three} suit={Suit.Spades} />
+    ]
+
+    it("returns a flush", () => {
+      expect(getHands(cards)).toContain(Hand.Flush)
+    })
+  })
 })

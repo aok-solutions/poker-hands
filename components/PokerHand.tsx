@@ -1,4 +1,4 @@
-import { Card, Rank } from "Card"
+import { Card, Rank, Suit } from "Card"
 
 export enum Hand {
   HighCard,
@@ -34,6 +34,9 @@ export const getHands = (cards: Card[]): Hand[] => {
   const pairs: number[] = rankCounts.filter((c) => c == 2)
   if (pairs.length == 2) hands.push(Hand.TwoPair)
   if (pairs.length == 1) hands.push(Hand.Pair)
+
+  const isFlush = cards.filter((card) => card.props.suit === cards[0].props.suit).length === 5
+  if (isFlush) hands.push(Hand.Flush)
 
   return hands
 }
