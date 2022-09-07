@@ -18,11 +18,11 @@ export const getHands = (cards: Card[]): Hand[] => {
 
   let ranks = new Map<Rank, number>([])
   cards.forEach((card) => {
-    if (ranks.has(card.rank)) {
-      let r = ranks.get(card.rank) || 1
-      ranks.set(card.rank, r + 1)
+    if (ranks.has(card.props.rank)) {
+      let count = ranks.get(card.props.rank) || 1
+      ranks.set(card.props.rank, count + 1)
     } else {
-      ranks.set(card.rank, 1)
+      ranks.set(card.props.rank, 1)
     }
   })
 
@@ -32,7 +32,6 @@ export const getHands = (cards: Card[]): Hand[] => {
   if (rankCounts.includes(3)) hands.push(Hand.ThreeOfAKind)
 
   const pairs: number[] = rankCounts.filter((c) => c == 2)
-  console.log(pairs)
   if (pairs.length == 2) hands.push(Hand.TwoPair)
   if (pairs.length == 1) hands.push(Hand.Pair)
 
