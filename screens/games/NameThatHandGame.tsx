@@ -53,7 +53,7 @@ export default function NameThatHandGame() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 80,
     flexDirection: "column",
     backgroundColor: "white"
@@ -61,14 +61,12 @@ const styles = StyleSheet.create({
   community: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-start",
-    width: 65
+    justifyContent: "center"
   },
   hole: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-start",
-    width: 65
+    justifyContent: "center"
   },
   button: {
     paddingHorizontal: 20,
@@ -77,12 +75,12 @@ const styles = StyleSheet.create({
     backgroundColor: "oldlace",
     marginHorizontal: "1%",
     marginBottom: 6,
-    minWidth: "48%",
-    textAlign: "center"
+    minWidth: "48%"
   },
   buttonLabel: {
     fontSize: 16,
     fontWeight: "500",
-    color: "coral"
+    color: "coral",
+    textAlign: "center"
   }
 })
