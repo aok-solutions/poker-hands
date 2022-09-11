@@ -162,6 +162,9 @@ export const pokerCards = new Map([
 
 export const Card = (props: CardProps) => {
   return (
-    <Image source={pokerCards.get(props.suit).get(props.rank)} style={{ height: 90, width: 62, marginHorizontal: 5 }} />
+    <Image
+      source={pokerCards.get(props.suit).get(props.rank)}
+      style={{ height: 90, width: 62, marginHorizontal: 5 }}
+    />
   )
 }
