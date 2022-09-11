@@ -1,4 +1,4 @@
-import { Card, Rank } from "Card"
+import { Card, Rank, Suit } from "Card"
 
 export enum Hand {
   HighCard,
@@ -13,16 +13,25 @@ export enum Hand {
   RoyalFlush
 }
 
-export const getHands = (cards: Card[]): Hand[] => {
+export const getHands = (holeCards: Card[], communityCards: Card[]): Hand[] => {
+  const cards: Card[] = holeCards.concat(communityCards)
   let hands: Hand[] = [Hand.HighCard]
 
   let rankFrequencies = new Map<Rank, number>([])
+  let suitFrequencies = new Map<Suit, number>([])
   cards.forEach((card) => {
     if (rankFrequencies.has(card.props.rank)) {
       let count = rankFrequencies.get(card.props.rank) || 1
       rankFrequencies.set(card.props.rank, count + 1)
     } else {
       rankFrequencies.set(card.props.rank, 1)
+    }
+
+    if (suitFrequencies.has(card.props.suit)) {
+      let count = suitFrequencies.get(card.props.suit) || 1
+      suitFrequencies.set(card.props.suit, count + 1)
+    } else {
+      suitFrequencies.set(card.props.suit, 1)
     }
   })
 
@@ -35,8 +44,13 @@ export const getHands = (cards: Card[]): Hand[] => {
   if (pairs.length == 2) hands.push(Hand.TwoPair)
   if (pairs.length == 1) hands.push(Hand.Pair)
 
-  const isFlush = cards.filter((card) => card.props.suit === cards[0].props.suit).length === 5
+  const suitCounts: number[] = Array.from(suitFrequencies.values())
+  let isFlush = suitCounts.includes(5)
   if (isFlush) hands.push(Hand.Flush)
+
+  // sort community cards
+  // find possible straights
+  // substitute hole cards to see if they qualify
 
   const ranks: Rank[] = cards.map((c) => c.props.rank).sort((a: Rank, b: Rank) => a - b)
   const straight = [...Array(5).keys()].map((i) => i + ranks[0])
