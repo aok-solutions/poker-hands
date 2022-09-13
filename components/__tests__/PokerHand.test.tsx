@@ -138,14 +138,14 @@ describe("PokerHand.getHands", () => {
       let communityCards = [
         <Card rank={Rank.Two} suit={Suit.Clubs} />,
         <Card rank={Rank.Queen} suit={Suit.Spades} />,
-        <Card rank={Rank.Nine} suit={Suit.Spades} />,
+        <Card rank={Rank.Ten} suit={Suit.Spades} />,
         <Card rank={Rank.Six} suit={Suit.Diamonds} />,
         <Card rank={Rank.Eight} suit={Suit.Spades} />
       ]
 
       let holeCards = [
         <Card rank={Rank.Jack} suit={Suit.Spades} />,
-        <Card rank={Rank.Ten} suit={Suit.Spades} />
+        <Card rank={Rank.Nine} suit={Suit.Spades} />
       ]
 
       it("returns a straight flush", () => {

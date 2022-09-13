@@ -1,4 +1,4 @@
-import { Card, Rank, Suit } from "Card"
+import { Card, Rank, Suit } from "./Card"
 
 export enum Hand {
   HighCard,
@@ -48,16 +48,29 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Hand[] => {
   let isFlush = suitCounts.includes(5)
   if (isFlush) hands.push(Hand.Flush)
 
-  // sort community cards
-  // find possible straights
-  // substitute hole cards to see if they qualify
+  let possibleStraight: Rank[] = []
+  const ranks: Rank[] = [
+    ...new Set(cards.map((card) => card.props.rank).sort((rankA, rankB) => rankA - rankB))
+  ]
+  ranks.forEach((rank, index) => {
+    if (index === 0) possibleStraight.push(rank)
+    else {
+      const lastRank: Rank = possibleStraight[possibleStraight.length - 1]
+      const nextRank: Rank = lastRank + 1
+      if (rank === nextRank) possibleStraight.push(rank)
+      else possibleStraight = [rank]
+    }
+  })
 
-  const ranks: Rank[] = cards.map((c) => c.props.rank).sort((a: Rank, b: Rank) => a - b)
-  const straight = [...Array(5).keys()].map((i) => i + ranks[0])
-  const isStraight = ranks.map((rank, index) => rank === straight[index]).reduce((a, b) => a && b)
+  const isStraight =
+    possibleStraight.length >= 5 &&
+    possibleStraight
+      .map((rank, index) => rank === index + possibleStraight[0])
+      .reduce((boolA, boolB) => boolA && boolB)
+
   if (isStraight) {
     if (isFlush) {
-      const hasAceHigh = ranks[ranks.length - 1] === 12 // Rank.Ace is 12
+      const hasAceHigh = possibleStraight[possibleStraight.length - 1] === Rank.Ace
       if (hasAceHigh) hands.push(Hand.RoyalFlush)
       hands.push(Hand.StraightFlush)
     }
