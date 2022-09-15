@@ -52,15 +52,17 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Hand[] => {
   const ranks: Rank[] = [
     ...new Set(cards.map((card) => card.props.rank).sort((rankA, rankB) => rankA - rankB))
   ]
-  ranks.forEach((rank, index) => {
+
+  for (const [index, rank] of ranks.entries()) {
     if (index === 0) possibleStraight.push(rank)
     else {
       const lastRank: Rank = possibleStraight[possibleStraight.length - 1]
       const nextRank: Rank = lastRank + 1
       if (rank === nextRank) possibleStraight.push(rank)
+      else if (possibleStraight.length >= 5) continue
       else possibleStraight = [rank]
     }
-  })
+  }
 
   const isStraight =
     possibleStraight.length >= 5 &&

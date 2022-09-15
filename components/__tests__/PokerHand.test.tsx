@@ -134,6 +134,40 @@ describe("PokerHand.getHands", () => {
       expect(getHands(holeCards, communityCards)).toContain(Hand.Straight)
     })
 
+    it("returns a straight", () => {
+      let communityCards = [
+        <Card rank={Rank.Six} suit={Suit.Clubs} />,
+        <Card rank={Rank.Ten} suit={Suit.Spades} />,
+        <Card rank={Rank.Eight} suit={Suit.Diamonds} />,
+        <Card rank={Rank.Nine} suit={Suit.Diamonds} />,
+        <Card rank={Rank.Ace} suit={Suit.Spades} />
+      ]
+
+      let holeCards = [
+        <Card rank={Rank.Four} suit={Suit.Diamonds} />,
+        <Card rank={Rank.Seven} suit={Suit.Spades} />
+      ]
+
+      expect(getHands(holeCards, communityCards)).toContain(Hand.Straight)
+    })
+
+    it("returns a straight", () => {
+      let communityCards = [
+        <Card rank={Rank.King} suit={Suit.Clubs} />,
+        <Card rank={Rank.Six} suit={Suit.Clubs} />,
+        <Card rank={Rank.Five} suit={Suit.Clubs} />,
+        <Card rank={Rank.Seven} suit={Suit.Hearts} />,
+        <Card rank={Rank.Four} suit={Suit.Diamonds} />
+      ]
+
+      let holeCards = [
+        <Card rank={Rank.Eight} suit={Suit.Spades} />,
+        <Card rank={Rank.Jack} suit={Suit.Hearts} />
+      ]
+
+      expect(getHands(holeCards, communityCards)).toContain(Hand.Straight)
+    })
+
     describe("with the same suit", () => {
       let communityCards = [
         <Card rank={Rank.Two} suit={Suit.Clubs} />,
