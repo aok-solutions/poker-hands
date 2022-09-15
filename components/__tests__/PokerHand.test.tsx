@@ -40,6 +40,42 @@ describe("PokerHand.getHands", () => {
     })
   })
 
+  describe("with two sets of two cards of the same rank", () => {
+    it("returns two pair", () => {
+      let communityCards = [
+        <Card rank={Rank.Queen} suit={Suit.Hearts} />,
+        <Card rank={Rank.Two} suit={Suit.Diamonds} />,
+        <Card rank={Rank.King} suit={Suit.Hearts} />,
+        <Card rank={Rank.Nine} suit={Suit.Diamonds} />,
+        <Card rank={Rank.Queen} suit={Suit.Diamonds} />
+      ]
+
+      let holeCards = [
+        <Card rank={Rank.Eight} suit={Suit.Hearts} />,
+        <Card rank={Rank.Eight} suit={Suit.Clubs} />
+      ]
+
+      expect(getHands(holeCards, communityCards)).toContain(Hand.TwoPair)
+    })
+
+    it("returns two pair", () => {
+      let communityCards = [
+        <Card rank={Rank.Nine} suit={Suit.Hearts} />,
+        <Card rank={Rank.Eight} suit={Suit.Clubs} />,
+        <Card rank={Rank.King} suit={Suit.Hearts} />,
+        <Card rank={Rank.Nine} suit={Suit.Diamonds} />,
+        <Card rank={Rank.Queen} suit={Suit.Clubs} />
+      ]
+
+      let holeCards = [
+        <Card rank={Rank.Eight} suit={Suit.Hearts} />,
+        <Card rank={Rank.Queen} suit={Suit.Hearts} />
+      ]
+
+      expect(getHands(holeCards, communityCards)).toContain(Hand.TwoPair)
+    })
+  })
+
   describe("with three cards of the same rank", () => {
     let communityCards = [
       <Card rank={Rank.Two} suit={Suit.Clubs} />,

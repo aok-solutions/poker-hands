@@ -41,7 +41,7 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Hand[] => {
   if (rankCounts.includes(3)) hands.push(Hand.ThreeOfAKind)
 
   const pairs: number[] = rankCounts.filter((c) => c == 2)
-  if (pairs.length == 2) hands.push(Hand.TwoPair)
+  if (pairs.length >= 2) hands.push(Hand.TwoPair)
   if (pairs.length == 1) hands.push(Hand.Pair)
 
   const suitCounts: number[] = Array.from(suitFrequencies.values())
