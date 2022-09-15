@@ -1,7 +1,8 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
-import { Text, View, StyleSheet, Pressable } from "react-native"
+import { Pressable, StyleSheet, Text, View } from "react-native"
 import { Card, pokerCards, Rank, Suit } from "../../components/Card"
+import { getHands, Hand } from "../../components/PokerHand"
 
 const fullDeck = (): Card[] => {
   let deck: Card[] = []
@@ -28,20 +29,27 @@ export default function NameThatHandGame() {
   const [deck, setDeck] = useState<Card[]>(fullDeck())
   const [communityCards, setCommunityCards] = useState<Card[]>([])
   const [holeCards, setHoleCards] = useState<Card[]>([])
+  const [highHand, setHighHand] = useState<Hand>()
 
   const shuffleDeck = () => setDeck(shuffle(fullDeck()))
 
   useEffect(() => {
     setDeck(shuffle(deck))
+
     setHoleCards(deck.splice(0, 2))
     setCommunityCards(deck.splice(0, 5))
   }, [deck])
+
+  useEffect(() => {
+    setHighHand(getHands(holeCards, communityCards)[0])
+  }, [holeCards, communityCards])
 
   return (
     <View style={styles.container}>
       <View style={styles.community}>{communityCards}</View>
       <View style={styles.hole}>{holeCards}</View>
-      <View style={{ flex: 4, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 4, justifyContent: "space-around", alignItems: "center" }}>
+        <Text style={styles.pokerHand}>{Hand[highHand]}</Text>
         <Pressable style={styles.button} onPress={() => shuffleDeck()}>
           <Text style={styles.buttonLabel}>Deal Cards</Text>
         </Pressable>
@@ -82,5 +90,15 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "coral",
     textAlign: "center"
+  },
+  pokerHand: {
+    fontSize: 16,
+    fontWeight: "700",
+    borderWidth: 3,
+    borderColor: "coral",
+    textAlign: "center",
+    borderRadius: 6,
+    paddingVertical: 20,
+    paddingHorizontal: 60
   }
 })

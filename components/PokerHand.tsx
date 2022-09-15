@@ -77,5 +77,5 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Hand[] => {
     hands.push(Hand.Straight)
   }
 
-  return hands
+  return hands.sort((handA, handB) => handB - handA)
 }
