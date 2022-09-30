@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
 import { Pressable, StyleSheet, Text, View } from "react-native"
+import ScrollPicker from "react-native-wheel-scrollview-picker"
 import { Card, pokerCards, Rank, Suit } from "../../components/Card"
 import { getHands, Hand } from "../../components/PokerHand"
 
@@ -48,8 +49,22 @@ export default function NameThatHandGame() {
     <View style={styles.container}>
       <View style={styles.community}>{communityCards}</View>
       <View style={styles.hole}>{holeCards}</View>
-      <View style={{ flex: 4, justifyContent: "space-around", alignItems: "center" }}>
-        <Text style={styles.pokerHand}>{Hand[highHand]}</Text>
+      <View style={{ flex: 2, justifyContent: "space-around", alignItems: "center" }}>
+        <View>
+          <ScrollPicker
+            dataSource={Object.keys(Hand).filter(key => !isNaN(Number(Hand[key])))}
+            selectedIndex={0}
+            renderItem={(data) => <Text>{data}</Text>}
+            onValueChange={(data, selectedIndex) => {
+              console.log(data)
+            }}
+            wrapperHeight={300}
+            wrapperColor='#FFFFFF'
+            itemHeight={60}
+            highlightColor='#d8d8d8'
+            highlightBorderWidth={2}
+          />
+        </View>
         <Pressable style={styles.button} onPress={() => shuffleDeck()}>
           <Text style={styles.buttonLabel}>Deal Cards</Text>
         </Pressable>
