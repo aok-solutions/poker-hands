@@ -1,9 +1,9 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
-import ScrollPicker from "react-native-wheel-scrollview-picker"
+import { StyleSheet, View } from "react-native"
 import { Card, pokerCards, Rank, Suit } from "../../components/Card"
 import { getHands, Hand } from "../../components/PokerHand"
+import ScrollHandPicker from "../../components/ScrollHandPicker"
 
 const fullDeck = (): Card[] => {
   let deck: Card[] = []
@@ -33,6 +33,11 @@ export default function NameThatHandGame() {
   const [highHand, setHighHand] = useState<Hand>()
 
   const shuffleDeck = () => setDeck(shuffle(fullDeck()))
+  const submitAnswer = (answer: string) => {
+    const result = `submitted: ${answer} | answer: ${Hand[highHand]}`
+    console.log(result)
+    shuffleDeck()
+  }
 
   useEffect(() => {
     setDeck(shuffle(deck))
@@ -50,24 +55,7 @@ export default function NameThatHandGame() {
       <View style={styles.community}>{communityCards}</View>
       <View style={styles.hole}>{holeCards}</View>
       <View style={{ flex: 2, justifyContent: "space-around", alignItems: "center" }}>
-        <View>
-          <ScrollPicker
-            dataSource={Object.keys(Hand).filter(key => !isNaN(Number(Hand[key])))}
-            selectedIndex={0}
-            renderItem={(data) => <Text>{data}</Text>}
-            onValueChange={(data, selectedIndex) => {
-              console.log(data)
-            }}
-            wrapperHeight={300}
-            wrapperColor='#FFFFFF'
-            itemHeight={60}
-            highlightColor='#d8d8d8'
-            highlightBorderWidth={2}
-          />
-        </View>
-        <Pressable style={styles.button} onPress={() => shuffleDeck()}>
-          <Text style={styles.buttonLabel}>Deal Cards</Text>
-        </Pressable>
+        <ScrollHandPicker onSubmit={submitAnswer} />
       </View>
     </View>
   )
