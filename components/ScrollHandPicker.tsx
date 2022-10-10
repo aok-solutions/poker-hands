@@ -1,17 +1,22 @@
 import { View } from "./Themed"
 import { Pressable, StyleSheet, Text, ViewStyle } from "react-native"
 import * as React from "react"
-import ScrollPicker from "react-native-wheel-scrollview-picker"
 import { Hand } from "./PokerHand"
 import { FontAwesome } from "@expo/vector-icons"
 import { useState } from "react"
+import ScrollPicker from "./ScrollPicker"
 
 type Props = {
   height?: number
   onSubmit: (value: string) => void
+  isDisabled: boolean
 }
 
-export default function ScrollHandPicker({ height = 80, onSubmit }: Props): JSX.Element {
+export default function ScrollHandPicker({
+  height = 80,
+  onSubmit,
+  isDisabled
+}: Props): JSX.Element {
   const [selectedValue, setSelectedValue] = useState("")
   const propStyles: ViewStyle = {
     height: height
@@ -33,6 +38,7 @@ export default function ScrollHandPicker({ height = 80, onSubmit }: Props): JSX.
             itemHeight={80}
             highlightColor="#d8d8d8"
             highlightBorderWidth={1}
+            disabled={isDisabled}
           />
         </View>
       </View>
@@ -40,6 +46,7 @@ export default function ScrollHandPicker({ height = 80, onSubmit }: Props): JSX.
         <Pressable
           style={[styles.submitButton, propStyles]}
           onPress={() => onSubmit(selectedValue)}
+          disabled={isDisabled}
         >
           <FontAwesome name="arrow-up" size={40} color="white" />
         </Pressable>

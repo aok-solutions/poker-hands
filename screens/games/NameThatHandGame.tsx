@@ -27,6 +27,8 @@ function shuffle(array) {
   return array
 }
 
+const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+
 export default function NameThatHandGame() {
   const [deck, setDeck] = useState<Card[]>(fullDeck())
   const [communityCards, setCommunityCards] = useState<Card[]>([])
@@ -34,13 +36,27 @@ export default function NameThatHandGame() {
   const [highHand, setHighHand] = useState<Hand>()
   const [correctAnswer, setCorrectAnswer] = useState<Hand>()
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
+  const [isAnswering, setIsAnswering] = useState<boolean>(true)
 
   const shuffleDeck = () => setDeck(shuffle(fullDeck()))
-  const submitAnswer = (answer: string) => {
+  const submitAnswer = async (answer: string) => {
+    setIsAnswering(false)
+
     const highestHand = Hand[highHand]
+    const isAnswerCorrect = (answer as Hand) === highestHand;
     setCorrectAnswer(highestHand)
-    setAnswerCorrect((answer as Hand) === highestHand)
+    setAnswerCorrect(isAnswerCorrect)
+
+    const delayDuration = isAnswerCorrect ? 1000 : 3000
+
+    await delay(delayDuration)
+    resetState()
+  }
+
+  const resetState = () => {
     shuffleDeck()
+    setCorrectAnswer(null)
+    setIsAnswering(true)
   }
 
   useEffect(() => {
@@ -59,7 +75,7 @@ export default function NameThatHandGame() {
       <View style={styles.community}>{communityCards}</View>
       <View style={styles.hole}>{holeCards}</View>
       <View style={{ flex: 2, justifyContent: "space-around", alignItems: "center" }}>
-        <ScrollHandPicker onSubmit={submitAnswer} />
+        <ScrollHandPicker onSubmit={submitAnswer} isDisabled={!isAnswering} />
         {correctAnswer && (
           <AnswerBadge
             answerCorrect={answerCorrect}
