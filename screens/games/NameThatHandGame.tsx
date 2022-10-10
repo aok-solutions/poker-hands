@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native"
 import { Card, pokerCards, Rank, Suit } from "../../components/Card"
 import { getHands, Hand } from "../../components/PokerHand"
 import ScrollHandPicker from "../../components/ScrollHandPicker"
+import { AnswerBadge } from "../../components/AnswerBadge"
 
 const fullDeck = (): Card[] => {
   let deck: Card[] = []
@@ -31,11 +32,14 @@ export default function NameThatHandGame() {
   const [communityCards, setCommunityCards] = useState<Card[]>([])
   const [holeCards, setHoleCards] = useState<Card[]>([])
   const [highHand, setHighHand] = useState<Hand>()
+  const [correctAnswer, setCorrectAnswer] = useState<Hand>()
+  const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
 
   const shuffleDeck = () => setDeck(shuffle(fullDeck()))
   const submitAnswer = (answer: string) => {
-    const result = `submitted: ${answer} | answer: ${Hand[highHand]}`
-    console.log(result)
+    const highestHand = Hand[highHand]
+    setCorrectAnswer(highestHand)
+    setAnswerCorrect((answer as Hand) === highestHand)
     shuffleDeck()
   }
 
@@ -56,6 +60,12 @@ export default function NameThatHandGame() {
       <View style={styles.hole}>{holeCards}</View>
       <View style={{ flex: 2, justifyContent: "space-around", alignItems: "center" }}>
         <ScrollHandPicker onSubmit={submitAnswer} />
+        {correctAnswer && (
+          <AnswerBadge
+            answerCorrect={answerCorrect}
+            text={answerCorrect ? "" : correctAnswer?.toString() || ""}
+          />
+        )}
       </View>
     </View>
   )
