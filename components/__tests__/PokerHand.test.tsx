@@ -1,4 +1,4 @@
-import { getHands, Hand } from "../PokerHand"
+import { getBetterHands, getHands, Hand } from "../PokerHand"
 import { Card, Rank, Suit } from "../Card"
 
 describe("PokerHand.getHands", () => {
@@ -17,7 +17,7 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns high card", () => {
-      expect(getHands(communityCards, holeCards)).toEqual([
+      expect(getBetterHands(communityCards, holeCards)).toContainEqual([
         Hand.HighCard,
         [<Card rank={Rank.King} suit={Suit.Clubs} />]
       ])
@@ -39,7 +39,7 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns a pair", () => {
-      expect(getHands(holeCards, communityCards)).toContain([
+      expect(getBetterHands(holeCards, communityCards)).toContainEqual([
         Hand.Pair,
         [<Card rank={Rank.King} suit={Suit.Spades} />, <Card rank={Rank.King} suit={Suit.Clubs} />]
       ])
@@ -201,7 +201,7 @@ describe("PokerHand.getHands", () => {
           <Card rank={Rank.Jack} suit={Suit.Spades} />,
           <Card rank={Rank.Eight} suit={Suit.Spades} />,
           <Card rank={Rank.Three} suit={Suit.Clubs} />,
-          <Card rank={Rank.Two} suit={Suit.Spades} />,
+          <Card rank={Rank.Two} suit={Suit.Spades} />
         ]
       ])
     })
@@ -255,7 +255,7 @@ describe("PokerHand.getHands", () => {
           <Card rank={Rank.Nine} suit={Suit.Diamonds} />,
           <Card rank={Rank.Eight} suit={Suit.Diamonds} />,
           <Card rank={Rank.Seven} suit={Suit.Spades} />,
-          <Card rank={Rank.Six} suit={Suit.Clubs} />,
+          <Card rank={Rank.Six} suit={Suit.Clubs} />
         ]
       ])
     })

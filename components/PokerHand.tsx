@@ -13,6 +13,34 @@ export enum Hand {
   RoyalFlush
 }
 
+const sortCards = (cardA: Card, cardB: Card): number => {
+  if (cardA.props.rank > cardB.props.rank) return -1
+  else if (cardA.props.rank === cardB.props.rank) {
+    if (cardA.props.suit > cardB.props.suit) return -1
+    else return 1
+  } else return 1
+}
+
+export const getBetterHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card[]][] => {
+  const cards: Card[] = holeCards.concat(communityCards)
+  let buildHands: Card[] = []
+  let possibleHands: [Hand, Card[]][] = []
+
+  cards.forEach((card) => {
+    buildHands.forEach((x) => {
+      if (x.props.rank === card.props.rank)
+        possibleHands.push([Hand.Pair, [x, card].sort(sortCards)])
+    })
+
+    buildHands.push(card)
+  })
+
+  buildHands.sort(sortCards)
+  possibleHands.push([Hand.HighCard, [buildHands[0]]])
+
+  return possibleHands
+}
+
 export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card[]][] => {
   const cards: Card[] = holeCards.concat(communityCards)
   let hands: Hand[] = [Hand.HighCard]
