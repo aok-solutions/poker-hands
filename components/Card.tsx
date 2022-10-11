@@ -63,10 +63,10 @@ type CardProps = {
 }
 
 export enum Suit {
-  Spades,
   Clubs,
   Diamonds,
-  Hearts
+  Hearts,
+  Spades
 }
 
 export enum Rank {

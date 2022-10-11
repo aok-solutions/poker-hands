@@ -13,7 +13,7 @@ export enum Hand {
   RoyalFlush
 }
 
-export const getHands = (holeCards: Card[], communityCards: Card[]): Hand[] => {
+export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card[]][] => {
   const cards: Card[] = holeCards.concat(communityCards)
   let hands: Hand[] = [Hand.HighCard]
 
@@ -79,5 +79,5 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Hand[] => {
     hands.push(Hand.Straight)
   }
 
-  return hands.sort((handA, handB) => handB - handA)
+  return hands.map((h) => [h, []]).sort((handA, handB) => handB[0] - handA[0])
 }

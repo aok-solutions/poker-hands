@@ -17,7 +17,10 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns high card", () => {
-      expect(getHands(communityCards, holeCards)).toEqual([Hand.HighCard])
+      expect(getHands(communityCards, holeCards)).toEqual([
+        Hand.HighCard,
+        [<Card rank={Rank.King} suit={Suit.Clubs} />]
+      ])
     })
   })
 
@@ -36,7 +39,10 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns a pair", () => {
-      expect(getHands(holeCards, communityCards)).toContain(Hand.Pair)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.Pair,
+        [<Card rank={Rank.King} suit={Suit.Spades} />, <Card rank={Rank.King} suit={Suit.Clubs} />]
+      ])
     })
   })
 
@@ -55,7 +61,15 @@ describe("PokerHand.getHands", () => {
         <Card rank={Rank.Eight} suit={Suit.Clubs} />
       ]
 
-      expect(getHands(holeCards, communityCards)).toContain(Hand.TwoPair)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.TwoPair,
+        [
+          <Card rank={Rank.Queen} suit={Suit.Hearts} />,
+          <Card rank={Rank.Queen} suit={Suit.Diamonds} />,
+          <Card rank={Rank.Eight} suit={Suit.Hearts} />,
+          <Card rank={Rank.Eight} suit={Suit.Clubs} />
+        ]
+      ])
     })
 
     it("returns two pair", () => {
@@ -72,7 +86,15 @@ describe("PokerHand.getHands", () => {
         <Card rank={Rank.Queen} suit={Suit.Hearts} />
       ]
 
-      expect(getHands(holeCards, communityCards)).toContain(Hand.TwoPair)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.TwoPair,
+        [
+          <Card rank={Rank.Queen} suit={Suit.Hearts} />,
+          <Card rank={Rank.Queen} suit={Suit.Clubs} />,
+          <Card rank={Rank.Eight} suit={Suit.Hearts} />,
+          <Card rank={Rank.Eight} suit={Suit.Clubs} />
+        ]
+      ])
     })
   })
 
@@ -91,7 +113,14 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns a three of a kind", () => {
-      expect(getHands(holeCards, communityCards)).toContain(Hand.ThreeOfAKind)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.ThreeOfAKind,
+        [
+          <Card rank={Rank.King} suit={Suit.Spades} />,
+          <Card rank={Rank.King} suit={Suit.Hearts} />,
+          <Card rank={Rank.King} suit={Suit.Clubs} />
+        ]
+      ])
     })
 
     describe("with another two cards of the same rank", () => {
@@ -109,7 +138,16 @@ describe("PokerHand.getHands", () => {
       ]
 
       it("returns a full house", () => {
-        expect(getHands(holeCards, communityCards)).toContain(Hand.FullHouse)
+        expect(getHands(holeCards, communityCards)).toContain([
+          Hand.FullHouse,
+          [
+            <Card rank={Rank.King} suit={Suit.Spades} />,
+            <Card rank={Rank.King} suit={Suit.Hearts} />,
+            <Card rank={Rank.King} suit={Suit.Clubs} />,
+            <Card rank={Rank.Ace} suit={Suit.Diamonds} />,
+            <Card rank={Rank.Ace} suit={Suit.Clubs} />
+          ]
+        ])
       })
     })
   })
@@ -129,7 +167,15 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns a four of a kind", () => {
-      expect(getHands(holeCards, communityCards)).toContain(Hand.FourOfAKind)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.FourOfAKind,
+        [
+          <Card rank={Rank.King} suit={Suit.Spades} />,
+          <Card rank={Rank.King} suit={Suit.Hearts} />,
+          <Card rank={Rank.King} suit={Suit.Diamonds} />,
+          <Card rank={Rank.King} suit={Suit.Clubs} />
+        ]
+      ])
     })
   })
 
@@ -148,7 +194,16 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns a flush", () => {
-      expect(getHands(holeCards, communityCards)).toContain(Hand.Flush)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.Flush,
+        [
+          <Card rank={Rank.King} suit={Suit.Spades} />,
+          <Card rank={Rank.Jack} suit={Suit.Spades} />,
+          <Card rank={Rank.Eight} suit={Suit.Spades} />,
+          <Card rank={Rank.Three} suit={Suit.Clubs} />,
+          <Card rank={Rank.Two} suit={Suit.Spades} />,
+        ]
+      ])
     })
   })
 
@@ -167,7 +222,16 @@ describe("PokerHand.getHands", () => {
     ]
 
     it("returns a straight", () => {
-      expect(getHands(holeCards, communityCards)).toContain(Hand.Straight)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.Straight,
+        [
+          <Card rank={Rank.Queen} suit={Suit.Clubs} />,
+          <Card rank={Rank.Jack} suit={Suit.Hearts} />,
+          <Card rank={Rank.Ten} suit={Suit.Diamonds} />,
+          <Card rank={Rank.Nine} suit={Suit.Spades} />,
+          <Card rank={Rank.Eight} suit={Suit.Clubs} />
+        ]
+      ])
     })
 
     it("returns a straight", () => {
@@ -184,7 +248,16 @@ describe("PokerHand.getHands", () => {
         <Card rank={Rank.Seven} suit={Suit.Spades} />
       ]
 
-      expect(getHands(holeCards, communityCards)).toContain(Hand.Straight)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.Straight,
+        [
+          <Card rank={Rank.Ten} suit={Suit.Spades} />,
+          <Card rank={Rank.Nine} suit={Suit.Diamonds} />,
+          <Card rank={Rank.Eight} suit={Suit.Diamonds} />,
+          <Card rank={Rank.Seven} suit={Suit.Spades} />,
+          <Card rank={Rank.Six} suit={Suit.Clubs} />,
+        ]
+      ])
     })
 
     it("returns a straight", () => {
@@ -201,7 +274,16 @@ describe("PokerHand.getHands", () => {
         <Card rank={Rank.Jack} suit={Suit.Hearts} />
       ]
 
-      expect(getHands(holeCards, communityCards)).toContain(Hand.Straight)
+      expect(getHands(holeCards, communityCards)).toContain([
+        Hand.Straight,
+        [
+          <Card rank={Rank.Eight} suit={Suit.Spades} />,
+          <Card rank={Rank.Seven} suit={Suit.Hearts} />,
+          <Card rank={Rank.Six} suit={Suit.Clubs} />,
+          <Card rank={Rank.Five} suit={Suit.Clubs} />,
+          <Card rank={Rank.Four} suit={Suit.Diamonds} />
+        ]
+      ])
     })
 
     describe("with the same suit", () => {
@@ -219,14 +301,23 @@ describe("PokerHand.getHands", () => {
       ]
 
       it("returns a straight flush", () => {
-        expect(getHands(holeCards, communityCards)).toContain(Hand.StraightFlush)
+        expect(getHands(holeCards, communityCards)).toContain([
+          Hand.StraightFlush,
+          [
+            <Card rank={Rank.Queen} suit={Suit.Spades} />,
+            <Card rank={Rank.Jack} suit={Suit.Spades} />,
+            <Card rank={Rank.Ten} suit={Suit.Spades} />,
+            <Card rank={Rank.Nine} suit={Suit.Spades} />,
+            <Card rank={Rank.Eight} suit={Suit.Spades} />
+          ]
+        ])
       })
 
       describe("with an Ace high", () => {
         let communityCards = [
           <Card rank={Rank.Two} suit={Suit.Clubs} />,
           <Card rank={Rank.Ace} suit={Suit.Spades} />,
-          <Card rank={Rank.King} suit={Suit.Spades} />,
+          <Card rank={Rank.Ace} suit={Suit.Spades} />,
           <Card rank={Rank.Queen} suit={Suit.Spades} />,
           <Card rank={Rank.Six} suit={Suit.Diamonds} />
         ]
@@ -237,7 +328,16 @@ describe("PokerHand.getHands", () => {
         ]
 
         it("returns a royal flush", () => {
-          expect(getHands(holeCards, communityCards)).toContain(Hand.RoyalFlush)
+          expect(getHands(holeCards, communityCards)).toContain([
+            Hand.RoyalFlush,
+            [
+              <Card rank={Rank.Ace} suit={Suit.Spades} />,
+              <Card rank={Rank.King} suit={Suit.Spades} />,
+              <Card rank={Rank.Queen} suit={Suit.Spades} />,
+              <Card rank={Rank.Jack} suit={Suit.Spades} />,
+              <Card rank={Rank.Ten} suit={Suit.Spades} />
+            ]
+          ])
         })
       })
     })

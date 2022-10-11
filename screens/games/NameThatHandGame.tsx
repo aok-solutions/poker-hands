@@ -43,7 +43,7 @@ export default function NameThatHandGame() {
     setIsAnswering(false)
 
     const highestHand = Hand[highHand]
-    const isAnswerCorrect = (answer as Hand) === highestHand;
+    const isAnswerCorrect = (answer as Hand) === highestHand
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
 
@@ -67,7 +67,7 @@ export default function NameThatHandGame() {
   }, [deck])
 
   useEffect(() => {
-    setHighHand(getHands(holeCards, communityCards)[0])
+    setHighHand(getHands(holeCards, communityCards)[0][0])
   }, [holeCards, communityCards])
 
   return (
