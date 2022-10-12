@@ -61,7 +61,7 @@ describe("PokerHand.getHands", () => {
         <Card rank={Rank.Eight} suit={Suit.Clubs} />
       ]
 
-      expect(getHands(holeCards, communityCards)).toContain([
+      expect(getBetterHands(holeCards, communityCards)).toContainEqual([
         Hand.TwoPair,
         [
           <Card rank={Rank.Queen} suit={Suit.Hearts} />,
@@ -86,13 +86,13 @@ describe("PokerHand.getHands", () => {
         <Card rank={Rank.Queen} suit={Suit.Hearts} />
       ]
 
-      expect(getHands(holeCards, communityCards)).toContain([
+      expect(getBetterHands(holeCards, communityCards)).toContainEqual([
         Hand.TwoPair,
         [
           <Card rank={Rank.Queen} suit={Suit.Hearts} />,
           <Card rank={Rank.Queen} suit={Suit.Clubs} />,
-          <Card rank={Rank.Eight} suit={Suit.Hearts} />,
-          <Card rank={Rank.Eight} suit={Suit.Clubs} />
+          <Card rank={Rank.Nine} suit={Suit.Hearts} />,
+          <Card rank={Rank.Nine} suit={Suit.Diamonds} />
         ]
       ])
     })

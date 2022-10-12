@@ -37,6 +37,15 @@ export const getBetterHands = (holeCards: Card[], communityCards: Card[]): [Hand
 
   buildHands.sort(sortCards)
   possibleHands.push([Hand.HighCard, [buildHands[0]]])
+  const pairs = possibleHands.filter((h) => h[0] === Hand.Pair)
+  if (pairs.length > 1) {
+    for (let i = 0; i < pairs.length - 1; i++) {
+      possibleHands.push([
+        Hand.TwoPair,
+        [...possibleHands[i][1], ...possibleHands[i + 1][1]].sort(sortCards)
+      ])
+    }
+  }
 
   return possibleHands
 }
