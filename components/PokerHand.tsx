@@ -74,6 +74,14 @@ export const getBetterHands = (
     if (value.length === 4) possibleHands[Hand.FourOfAKind].push(value)
   }
 
+  if (possibleHands[Hand.Pair].length > 1) {
+    for (let i = 0; i < possibleHands[Hand.Pair].length - 1; i++) {
+      possibleHands[Hand.TwoPair].push(
+        [...possibleHands[Hand.Pair][i], ...possibleHands[Hand.Pair][i + 1]].sort(sortCards)
+      )
+    }
+  }
+
   for (const [key, value] of Object.entries(groupBySuit)) {
     if (value.length === 5) possibleHands[Hand.Flush].push(value)
   }
