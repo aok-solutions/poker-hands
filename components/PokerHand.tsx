@@ -21,30 +21,61 @@ const sortCards = (cardA: Card, cardB: Card): number => {
   } else return 1
 }
 
-export const getBetterHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card[]][] => {
+export const getBetterHands = (
+  holeCards: Card[],
+  communityCards: Card[]
+): Record<Hand, Card[][]> => {
+  let possibleHands: Record<Hand, Card[][]> = {
+    [Hand.RoyalFlush]: [],
+    [Hand.StraightFlush]: [],
+    [Hand.FourOfAKind]: [],
+    [Hand.FullHouse]: [],
+    [Hand.Flush]: [],
+    [Hand.Straight]: [],
+    [Hand.ThreeOfAKind]: [],
+    [Hand.TwoPair]: [],
+    [Hand.Pair]: [],
+    [Hand.HighCard]: []
+  }
+
+  let groupBySuit: Record<Suit, Card[]> = {
+    [Suit.Spades]: [],
+    [Suit.Hearts]: [],
+    [Suit.Diamonds]: [],
+    [Suit.Clubs]: []
+  }
+  let groupByRank: Record<Rank, Card[]> = {
+    [Rank.Ace]: [],
+    [Rank.King]: [],
+    [Rank.Queen]: [],
+    [Rank.Jack]: [],
+    [Rank.Ten]: [],
+    [Rank.Nine]: [],
+    [Rank.Eight]: [],
+    [Rank.Seven]: [],
+    [Rank.Six]: [],
+    [Rank.Five]: [],
+    [Rank.Four]: [],
+    [Rank.Three]: [],
+    [Rank.Two]: []
+  }
+
   const cards: Card[] = holeCards.concat(communityCards)
-  let buildHands: Card[] = []
-  let possibleHands: [Hand, Card[]][] = []
+  const sortedCards = cards.sort(sortCards)
 
-  cards.forEach((card) => {
-    buildHands.forEach((x) => {
-      if (x.props.rank === card.props.rank)
-        possibleHands.push([Hand.Pair, [x, card].sort(sortCards)])
-    })
+  sortedCards.forEach((card: Card) => groupBySuit[card.props.suit].push(card))
+  sortedCards.forEach((card: Card) => groupByRank[card.props.rank].push(card))
 
-    buildHands.push(card)
-  })
+  possibleHands[Hand.HighCard].push([sortedCards[0]])
 
-  buildHands.sort(sortCards)
-  possibleHands.push([Hand.HighCard, [buildHands[0]]])
-  const pairs = possibleHands.filter((h) => h[0] === Hand.Pair)
-  if (pairs.length > 1) {
-    for (let i = 0; i < pairs.length - 1; i++) {
-      possibleHands.push([
-        Hand.TwoPair,
-        [...possibleHands[i][1], ...possibleHands[i + 1][1]].sort(sortCards)
-      ])
-    }
+  for (const [key, value] of Object.entries(groupByRank)) {
+    if (value.length === 2) possibleHands[Hand.Pair].push(value)
+    if (value.length === 3) possibleHands[Hand.ThreeOfAKind].push(value)
+    if (value.length === 4) possibleHands[Hand.FourOfAKind].push(value)
+  }
+
+  for (const [key, value] of Object.entries(groupBySuit)) {
+    if (value.length === 5) possibleHands[Hand.Flush].push(value)
   }
 
   return possibleHands
