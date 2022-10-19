@@ -128,15 +128,12 @@ describe("PokerHand.getHands", () => {
       ]
 
       it("returns a full house", () => {
-        expect(getHands(holeCards, communityCards)).toContain([
-          Hand.FullHouse,
-          [
-            <Card rank={Rank.King} suit={Suit.Spades} />,
-            <Card rank={Rank.King} suit={Suit.Hearts} />,
-            <Card rank={Rank.King} suit={Suit.Clubs} />,
-            <Card rank={Rank.Ace} suit={Suit.Diamonds} />,
-            <Card rank={Rank.Ace} suit={Suit.Clubs} />
-          ]
+        expect(getBetterHands(holeCards, communityCards)[Hand.FullHouse]).toContainEqual([
+          <Card rank={Rank.King} suit={Suit.Spades} />,
+          <Card rank={Rank.King} suit={Suit.Hearts} />,
+          <Card rank={Rank.King} suit={Suit.Clubs} />,
+          <Card rank={Rank.Ace} suit={Suit.Diamonds} />,
+          <Card rank={Rank.Ace} suit={Suit.Clubs} />
         ])
       })
     })

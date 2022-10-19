@@ -68,10 +68,16 @@ export const getBetterHands = (
 
   possibleHands[Hand.HighCard].push([sortedCards[0]])
 
-  for (const [key, value] of Object.entries(groupByRank)) {
-    if (value.length === 2) possibleHands[Hand.Pair].push(value)
-    if (value.length === 3) possibleHands[Hand.ThreeOfAKind].push(value)
-    if (value.length === 4) possibleHands[Hand.FourOfAKind].push(value)
+  for (const [rank, cardsByRank] of Object.entries(groupByRank)) {
+    if (cardsByRank.length === 4) possibleHands[Hand.FourOfAKind].push(cardsByRank)
+    if (cardsByRank.length === 3) {
+      possibleHands[Hand.ThreeOfAKind].push(cardsByRank)
+
+      for (const [_rank, subCardsByRank] of Object.entries(groupByRank)) {
+        if (subCardsByRank.length === 2) possibleHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank])
+      }
+    }
+    if (cardsByRank.length === 2) possibleHands[Hand.Pair].push(cardsByRank)
   }
 
   if (possibleHands[Hand.Pair].length > 1) {
@@ -82,8 +88,8 @@ export const getBetterHands = (
     }
   }
 
-  for (const [key, value] of Object.entries(groupBySuit)) {
-    if (value.length === 5) possibleHands[Hand.Flush].push(value)
+  for (const [suit, cardsBySuit] of Object.entries(groupBySuit)) {
+    if (cardsBySuit.length === 5) possibleHands[Hand.Flush].push(cardsBySuit)
   }
 
   return possibleHands
