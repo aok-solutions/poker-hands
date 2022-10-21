@@ -68,18 +68,18 @@ export const getBetterHands = (
 
   possibleHands[Hand.HighCard].push([sortedCards[0]])
 
-  for (const [rank, cardsByRank] of Object.entries(groupByRank)) {
+  Object.values(groupByRank).forEach((cardsByRank) => {
     if (cardsByRank.length === 4) possibleHands[Hand.FourOfAKind].push(cardsByRank)
     if (cardsByRank.length === 3) {
       possibleHands[Hand.ThreeOfAKind].push(cardsByRank)
 
-      for (const [_rank, subCardsByRank] of Object.entries(groupByRank)) {
+      Object.values(groupByRank).forEach((subCardsByRank) => {
         if (subCardsByRank.length === 2)
           possibleHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank])
-      }
+      })
     }
     if (cardsByRank.length === 2) possibleHands[Hand.Pair].push(cardsByRank)
-  }
+  })
 
   if (possibleHands[Hand.Pair].length > 1) {
     for (let i = 0; i < possibleHands[Hand.Pair].length - 1; i++) {
@@ -89,9 +89,9 @@ export const getBetterHands = (
     }
   }
 
-  for (const [suit, cardsBySuit] of Object.entries(groupBySuit)) {
+  Object.values(groupBySuit).forEach((cardsBySuit) => {
     if (cardsBySuit.length === 5) possibleHands[Hand.Flush].push(cardsBySuit)
-  }
+  })
 
   const straight = findStraight(cards, []).sort(sortCards)
   if (straight.length > 0) {
