@@ -74,7 +74,8 @@ export const getBetterHands = (
       possibleHands[Hand.ThreeOfAKind].push(cardsByRank)
 
       for (const [_rank, subCardsByRank] of Object.entries(groupByRank)) {
-        if (subCardsByRank.length === 2) possibleHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank])
+        if (subCardsByRank.length === 2)
+          possibleHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank])
       }
     }
     if (cardsByRank.length === 2) possibleHands[Hand.Pair].push(cardsByRank)
@@ -92,7 +93,33 @@ export const getBetterHands = (
     if (cardsBySuit.length === 5) possibleHands[Hand.Flush].push(cardsBySuit)
   }
 
+  const straight = findStraight(cards, []).sort(sortCards)
+  if (straight.length > 0) {
+    possibleHands[Hand.Straight].push(straight)
+
+    const suits = new Set(straight.map((card) => card.props.suit))
+    if (suits.size === 1) possibleHands[Hand.StraightFlush].push(straight)
+
+    if (straight[0].props.rank === Rank.Ace) possibleHands[Hand.RoyalFlush].push(straight)
+  }
+
   return possibleHands
+}
+
+const findStraight = (cards: Card[], straight: Card[]): Card[] => {
+  if (cards.length + straight.length < 5) return []
+  if (straight.length === 5) return straight
+  if (cards.length === 0) return straight
+
+  if (straight.length === 0) {
+    const next = cards.shift()
+    return findStraight(cards, [next])
+  } else {
+    const top = cards.shift()
+    if (straight[0].props.rank - 1 === top.props.rank)
+      return findStraight(cards, [top, ...straight])
+    else return findStraight(cards, [top])
+  }
 }
 
 export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card[]][] => {
