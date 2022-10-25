@@ -1,4 +1,4 @@
-import { Card, Rank, Suit } from "./Card"
+import { Card, Rank, Suit } from "./PlayingCard"
 
 export enum Hand {
   HighCard,
@@ -14,9 +14,9 @@ export enum Hand {
 }
 
 const sortCards = (cardA: Card, cardB: Card): number => {
-  if (cardA.props.rank > cardB.props.rank) return -1
-  else if (cardA.props.rank === cardB.props.rank) {
-    if (cardA.props.suit > cardB.props.suit) return -1
+  if (cardA.rank > cardB.rank) return -1
+  else if (cardA.rank === cardB.rank) {
+    if (cardA.suit > cardB.suit) return -1
     else return 1
   } else return 1
 }
@@ -63,8 +63,8 @@ export const getBetterHands = (
   const cards: Card[] = holeCards.concat(communityCards)
   const sortedCards = cards.sort(sortCards)
 
-  sortedCards.forEach((card: Card) => groupBySuit[card.props.suit].push(card))
-  sortedCards.forEach((card: Card) => groupByRank[card.props.rank].push(card))
+  sortedCards.forEach((card: Card) => groupBySuit[card.suit].push(card))
+  sortedCards.forEach((card: Card) => groupByRank[card.rank].push(card))
 
   possibleHands[Hand.HighCard].push([sortedCards[0]])
 
@@ -97,10 +97,10 @@ export const getBetterHands = (
   if (straight.length > 0) {
     possibleHands[Hand.Straight].push(straight)
 
-    const suits = new Set(straight.map((card) => card.props.suit))
+    const suits = new Set(straight.map((card) => card.suit))
     if (suits.size === 1) possibleHands[Hand.StraightFlush].push(straight)
 
-    if (straight[0].props.rank === Rank.Ace) possibleHands[Hand.RoyalFlush].push(straight)
+    if (straight[0].rank === Rank.Ace) possibleHands[Hand.RoyalFlush].push(straight)
   }
 
   return possibleHands
@@ -111,15 +111,16 @@ const findStraight = (cards: Card[], straight: Card[]): Card[] => {
   if (straight.length === 5) return straight
   if (cards.length === 0) return straight
 
-  if (straight.length === 0) {
-    const next = cards.shift()
-    return findStraight(cards, [next])
-  } else {
-    const top = cards.shift()
-    if (straight[0].props.rank - 1 === top.props.rank)
-      return findStraight(cards, [top, ...straight])
-    else return findStraight(cards, [top])
-  }
+  const nextCard = cards.shift()
+
+  if (nextCard) {
+    if (straight.length === 0) return findStraight(cards, [nextCard])
+    else {
+      if (straight[0].rank - 1 === nextCard.rank)
+        return findStraight(cards, [nextCard, ...straight])
+      else return findStraight(cards, [nextCard])
+    }
+  } else return findStraight([], [])
 }
 
 export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card[]][] => {
@@ -129,18 +130,18 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card
   let rankFrequencies = new Map<Rank, number>([])
   let suitFrequencies = new Map<Suit, number>([])
   cards.forEach((card) => {
-    if (rankFrequencies.has(card.props.rank)) {
-      let count = rankFrequencies.get(card.props.rank) || 1
-      rankFrequencies.set(card.props.rank, count + 1)
+    if (rankFrequencies.has(card.rank)) {
+      let count = rankFrequencies.get(card.rank) || 1
+      rankFrequencies.set(card.rank, count + 1)
     } else {
-      rankFrequencies.set(card.props.rank, 1)
+      rankFrequencies.set(card.rank, 1)
     }
 
-    if (suitFrequencies.has(card.props.suit)) {
-      let count = suitFrequencies.get(card.props.suit) || 1
-      suitFrequencies.set(card.props.suit, count + 1)
+    if (suitFrequencies.has(card.suit)) {
+      let count = suitFrequencies.get(card.suit) || 1
+      suitFrequencies.set(card.suit, count + 1)
     } else {
-      suitFrequencies.set(card.props.suit, 1)
+      suitFrequencies.set(card.suit, 1)
     }
   })
 
@@ -159,7 +160,7 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card
 
   let possibleStraight: Rank[] = []
   const ranks: Rank[] = [
-    ...new Set(cards.map((card) => card.props.rank).sort((rankA, rankB) => rankA - rankB))
+    ...new Set(cards.map((card) => card.rank).sort((rankA, rankB) => rankA - rankB))
   ]
 
   for (const [index, rank] of ranks.entries()) {
@@ -188,5 +189,5 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card
     hands.push(Hand.Straight)
   }
 
-  return hands.map((h) => [h, []]).sort((handA, handB) => handB[0] - handA[0])
+  return hands.map((h: Hand) => [h, []]).sort((handA, handB) => handB[0] - handA[0])
 }

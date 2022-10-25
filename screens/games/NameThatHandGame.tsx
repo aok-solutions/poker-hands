@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
-import { Card, pokerCards, Rank, Suit } from "../../components/Card"
+import { Card, displayCard, pokerCards } from "../../components/PlayingCard"
 import { getHands, Hand } from "../../components/PokerHand"
 import ScrollHandPicker from "../../components/ScrollHandPicker"
 import { AnswerBadge } from "../../components/AnswerBadge"
@@ -9,15 +9,13 @@ import { AnswerBadge } from "../../components/AnswerBadge"
 const fullDeck = (): Card[] => {
   let deck: Card[] = []
   Array.from(pokerCards.entries()).forEach(([suit, ranks]) => {
-    Array.from(ranks.keys()).forEach((rank) => {
-      deck.push(<Card key={`${Rank[rank]}${Suit[suit]}`} rank={rank} suit={suit} />)
-    })
+    Array.from(ranks.keys()).forEach((rank) => deck.push({ rank, suit }))
   })
 
   return deck
 }
 
-function shuffle(array) {
+function shuffle(array: any) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1)) // random index from 0 to i
 
@@ -27,14 +25,14 @@ function shuffle(array) {
   return array
 }
 
-const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 export default function NameThatHandGame() {
   const [deck, setDeck] = useState<Card[]>(fullDeck())
   const [communityCards, setCommunityCards] = useState<Card[]>([])
   const [holeCards, setHoleCards] = useState<Card[]>([])
   const [highHand, setHighHand] = useState<Hand>()
-  const [correctAnswer, setCorrectAnswer] = useState<Hand>()
+  const [correctAnswer, setCorrectAnswer] = useState<string>()
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
 
@@ -42,8 +40,8 @@ export default function NameThatHandGame() {
   const submitAnswer = async (answer: string) => {
     setIsAnswering(false)
 
-    const highestHand = Hand[highHand]
-    const isAnswerCorrect = (answer as Hand) === highestHand
+    const highestHand: string = highHand ? Hand[highHand] : "HighCard"
+    const isAnswerCorrect = answer === highestHand
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
 
@@ -55,7 +53,7 @@ export default function NameThatHandGame() {
 
   const resetState = () => {
     shuffleDeck()
-    setCorrectAnswer(null)
+    setCorrectAnswer(undefined)
     setIsAnswering(true)
   }
 
@@ -72,16 +70,16 @@ export default function NameThatHandGame() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.community}>{communityCards}</View>
-      <View style={styles.hole}>{holeCards}</View>
+      <View style={styles.community}>{communityCards.map(displayCard)}</View>
+      <View style={styles.hole}>{holeCards.map(displayCard)}</View>
       <View style={{ flex: 2, justifyContent: "space-around", alignItems: "center" }}>
         <ScrollHandPicker onSubmit={submitAnswer} isDisabled={!isAnswering} />
-        {correctAnswer && (
+        {correctAnswer ? (
           <AnswerBadge
             answerCorrect={answerCorrect}
             text={answerCorrect ? "" : correctAnswer?.toString() || ""}
           />
-        )}
+        ) : null}
       </View>
     </View>
   )

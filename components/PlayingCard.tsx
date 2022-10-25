@@ -55,13 +55,6 @@ import KingSpades from "../assets/images/cards/King.Spades.png"
 import AceSpades from "../assets/images/cards/Ace.Spades.png"
 import { Image } from "react-native"
 
-const SIZE = "100%"
-
-type CardProps = {
-  rank: Rank
-  suit: Suit
-}
-
 export enum Suit {
   Clubs,
   Diamonds,
@@ -83,6 +76,11 @@ export enum Rank {
   Queen,
   King,
   Ace
+}
+
+export type Card = {
+  rank: Rank
+  suit: Suit
 }
 
 export const pokerCards = new Map([
@@ -160,11 +158,20 @@ export const pokerCards = new Map([
   ]
 ])
 
-export const Card = (props: CardProps) => {
+type Props = {
+  rank: Rank
+  suit: Suit
+}
+
+export const PlayingCard = ({ rank, suit }: Props) => {
   return (
     <Image
-      source={pokerCards.get(props.suit).get(props.rank)}
+      source={pokerCards.get(suit)?.get(rank)}
       style={{ height: 90, width: 62, marginHorizontal: 5 }}
     />
   )
 }
+
+export const displayCard = (card: Card) => (
+  <PlayingCard key={`${Rank[card.rank]}${Suit[card.suit]}`} rank={card.rank} suit={card.suit} />
+)

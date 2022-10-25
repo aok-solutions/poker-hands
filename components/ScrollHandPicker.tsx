@@ -29,10 +29,8 @@ export default function ScrollHandPicker({
           <ScrollPicker
             dataSource={Object.keys(Hand).filter((key) => !isNaN(Number(Hand[key])))}
             selectedIndex={0}
-            renderItem={(data) => <Text>{data}</Text>}
-            onValueChange={(data: string, selectedIndex) => {
-              setSelectedValue(data)
-            }}
+            renderItem={(data: string) => <Text>{data}</Text>}
+            onValueChange={(data: string) => setSelectedValue(data)}
             wrapperHeight={300}
             wrapperColor="#FFFFFF"
             itemHeight={80}

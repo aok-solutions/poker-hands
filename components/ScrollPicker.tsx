@@ -29,7 +29,7 @@ const isViewStyle = (style: ViewProps["style"]): style is ViewStyle => {
 
 export type ScrollPickerProps = {
   style?: ViewProps["style"]
-  dataSource: Array<string | number>
+  dataSource: Array<string>
   selectedIndex?: number
   onValueChange?: (value: ScrollPickerProps["dataSource"][0], index: number) => void
   renderItem?: (
