@@ -123,7 +123,7 @@ const findStraight = (cards: Card[], straight: Card[]): Card[] => {
   } else return findStraight([], [])
 }
 
-export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card[]][] => {
+export const getHands = (holeCards: Card[], communityCards: Card[]): Hand => {
   const cards: Card[] = holeCards.concat(communityCards)
   let hands: Hand[] = [Hand.HighCard]
 
@@ -189,5 +189,5 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): [Hand, Card
     hands.push(Hand.Straight)
   }
 
-  return hands.map((h: Hand) => [h, []]).sort((handA, handB) => handB[0] - handA[0])
+  return hands.sort((handA: Hand, handB: Hand) => handB - handA)[0]
 }

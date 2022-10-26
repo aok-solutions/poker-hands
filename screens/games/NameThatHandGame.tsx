@@ -65,7 +65,7 @@ export default function NameThatHandGame() {
   }, [deck])
 
   useEffect(() => {
-    setHighHand(getHands(holeCards, communityCards)[0][0])
+    setHighHand(getHands(holeCards, communityCards))
   }, [holeCards, communityCards])
 
   return (
