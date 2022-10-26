@@ -180,7 +180,7 @@ export const displayCard = (card: Card) => (
 )
 
 export const displayCardResult = (card: Card, hand: Card[]) => {
-  const cardInHand = hand.some((c) => c.rank === card.rank && c.suit === card.suit)
+  const cardInHand = hand.some((c: Card) => c.rank === card.rank && c.suit === card.suit)
   return (
     <PlayingCard
       key={`${Rank[card.rank]}${Suit[card.suit]}`}

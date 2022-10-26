@@ -31,8 +31,9 @@ const findStraight = (cards: Card[], straight: Card[]): Card[] => {
   if (nextCard) {
     if (straight.length === 0) return findStraight(cards, [nextCard])
     else {
-      if (straight[0].rank - 1 === nextCard.rank)
-        return findStraight(cards, [nextCard, ...straight])
+      const prevCard = straight[0]
+      if (prevCard.rank - 1 === nextCard.rank) return findStraight(cards, [nextCard, ...straight])
+      else if (prevCard.rank === nextCard.rank) return findStraight(cards, straight)
       else return findStraight(cards, [nextCard])
     }
   } else return findStraight([], [])
@@ -112,9 +113,11 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Record<Hand
     dealtHands[Hand.Straight].push(straight)
 
     const suits = new Set(straight.map((card) => card.suit))
-    if (suits.size === 1) dealtHands[Hand.StraightFlush].push(straight)
+    const isStraightFlush = suits.size === 1
+    if (isStraightFlush) dealtHands[Hand.StraightFlush].push(straight)
 
-    if (straight[0].rank === Rank.Ace) dealtHands[Hand.RoyalFlush].push(straight)
+    const isAceHigh = straight[0].rank === Rank.Ace
+    if (isStraightFlush && isAceHigh) dealtHands[Hand.RoyalFlush].push(straight)
   }
 
   return dealtHands

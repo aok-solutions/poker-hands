@@ -258,6 +258,54 @@ describe("PokerHand.getHands", () => {
       ])
     })
 
+    it("returns a straight", () => {
+      let communityCards = [
+        { rank: Rank.Two, suit: Suit.Spades },
+        { rank: Rank.Six, suit: Suit.Clubs },
+        { rank: Rank.Five, suit: Suit.Clubs },
+        { rank: Rank.Three, suit: Suit.Hearts },
+        { rank: Rank.Four, suit: Suit.Diamonds }
+      ]
+
+      let holeCards = [
+        { rank: Rank.Six, suit: Suit.Spades },
+        { rank: Rank.Four, suit: Suit.Hearts }
+      ]
+
+      expect(getHands(holeCards, communityCards)[Hand.Straight]).toContainEqual([
+        { rank: Rank.Six, suit: Suit.Spades },
+        { rank: Rank.Five, suit: Suit.Clubs },
+        { rank: Rank.Four, suit: Suit.Hearts },
+        { rank: Rank.Three, suit: Suit.Hearts },
+        { rank: Rank.Two, suit: Suit.Spades }
+      ])
+    })
+
+    describe("with an Ace high", () => {
+      it("does not return a royal flush", () => {
+        let communityCards = [
+          { rank: Rank.Two, suit: Suit.Clubs },
+          { rank: Rank.King, suit: Suit.Spades },
+          { rank: Rank.Jack, suit: Suit.Clubs },
+          { rank: Rank.Queen, suit: Suit.Spades },
+          { rank: Rank.Six, suit: Suit.Diamonds }
+        ]
+
+        let holeCards = [
+          { rank: Rank.Ace, suit: Suit.Hearts },
+          { rank: Rank.Ten, suit: Suit.Diamonds }
+        ]
+
+        expect(getHands(holeCards, communityCards)[Hand.RoyalFlush]).not.toContainEqual([
+          { rank: Rank.Ace, suit: Suit.Hearts },
+          { rank: Rank.King, suit: Suit.Spades },
+          { rank: Rank.Queen, suit: Suit.Spades },
+          { rank: Rank.Jack, suit: Suit.Clubs },
+          { rank: Rank.Ten, suit: Suit.Diamonds }
+        ])
+      })
+    })
+
     describe("with the same suit", () => {
       let communityCards = [
         { rank: Rank.Two, suit: Suit.Clubs },
