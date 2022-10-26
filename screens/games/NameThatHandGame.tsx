@@ -2,7 +2,7 @@ import * as React from "react"
 import { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Card, displayCard, pokerCards } from "../../components/PlayingCard"
-import { getHands, Hand } from "../../components/PokerHand"
+import { getHands, getHighHand, Hand } from "../../components/PokerHand"
 import ScrollHandPicker from "../../components/ScrollHandPicker"
 import { AnswerBadge } from "../../components/AnswerBadge"
 
@@ -40,7 +40,7 @@ export default function NameThatHandGame() {
   const submitAnswer = async (answer: string) => {
     setIsAnswering(false)
 
-    const highestHand: string = highHand ? Hand[highHand] : "HighCard"
+    const highestHand: string = highHand ? highHand.toString() : Hand.HighCard.toString()
     const isAnswerCorrect = answer === highestHand
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
@@ -65,7 +65,8 @@ export default function NameThatHandGame() {
   }, [deck])
 
   useEffect(() => {
-    setHighHand(getHands(holeCards, communityCards))
+    const highHandWithCards = getHighHand(getHands(holeCards, communityCards))
+    setHighHand(highHandWithCards[0])
   }, [holeCards, communityCards])
 
   return (

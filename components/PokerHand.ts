@@ -21,11 +21,25 @@ const sortCards = (cardA: Card, cardB: Card): number => {
   } else return 1
 }
 
-export const getBetterHands = (
-  holeCards: Card[],
-  communityCards: Card[]
-): Record<Hand, Card[][]> => {
-  let possibleHands: Record<Hand, Card[][]> = {
+const findStraight = (cards: Card[], straight: Card[]): Card[] => {
+  if (cards.length + straight.length < 5) return []
+  if (straight.length === 5) return straight
+  if (cards.length === 0) return straight
+
+  const nextCard = cards.shift()
+
+  if (nextCard) {
+    if (straight.length === 0) return findStraight(cards, [nextCard])
+    else {
+      if (straight[0].rank - 1 === nextCard.rank)
+        return findStraight(cards, [nextCard, ...straight])
+      else return findStraight(cards, [nextCard])
+    }
+  } else return findStraight([], [])
+}
+
+export const getHands = (holeCards: Card[], communityCards: Card[]): Record<Hand, Card[][]> => {
+  let dealtHands: Record<Hand, Card[][]> = {
     [Hand.RoyalFlush]: [],
     [Hand.StraightFlush]: [],
     [Hand.FourOfAKind]: [],
@@ -66,128 +80,50 @@ export const getBetterHands = (
   sortedCards.forEach((card: Card) => groupBySuit[card.suit].push(card))
   sortedCards.forEach((card: Card) => groupByRank[card.rank].push(card))
 
-  possibleHands[Hand.HighCard].push([sortedCards[0]])
+  dealtHands[Hand.HighCard].push([sortedCards[0]])
 
   Object.values(groupByRank).forEach((cardsByRank) => {
-    if (cardsByRank.length === 4) possibleHands[Hand.FourOfAKind].push(cardsByRank)
+    if (cardsByRank.length === 4) dealtHands[Hand.FourOfAKind].push(cardsByRank)
     if (cardsByRank.length === 3) {
-      possibleHands[Hand.ThreeOfAKind].push(cardsByRank)
+      dealtHands[Hand.ThreeOfAKind].push(cardsByRank)
 
       Object.values(groupByRank).forEach((subCardsByRank) => {
         if (subCardsByRank.length === 2)
-          possibleHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank])
+          dealtHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank])
       })
     }
-    if (cardsByRank.length === 2) possibleHands[Hand.Pair].push(cardsByRank)
+    if (cardsByRank.length === 2) dealtHands[Hand.Pair].push(cardsByRank)
   })
 
-  if (possibleHands[Hand.Pair].length > 1) {
-    for (let i = 0; i < possibleHands[Hand.Pair].length - 1; i++) {
-      possibleHands[Hand.TwoPair].push(
-        [...possibleHands[Hand.Pair][i], ...possibleHands[Hand.Pair][i + 1]].sort(sortCards)
+  if (dealtHands[Hand.Pair].length > 1) {
+    for (let i = 0; i < dealtHands[Hand.Pair].length - 1; i++) {
+      dealtHands[Hand.TwoPair].push(
+        [...dealtHands[Hand.Pair][i], ...dealtHands[Hand.Pair][i + 1]].sort(sortCards)
       )
     }
   }
 
   Object.values(groupBySuit).forEach((cardsBySuit) => {
-    if (cardsBySuit.length === 5) possibleHands[Hand.Flush].push(cardsBySuit)
+    if (cardsBySuit.length === 5) dealtHands[Hand.Flush].push(cardsBySuit)
   })
 
   const straight = findStraight(cards, []).sort(sortCards)
   if (straight.length > 0) {
-    possibleHands[Hand.Straight].push(straight)
+    dealtHands[Hand.Straight].push(straight)
 
     const suits = new Set(straight.map((card) => card.suit))
-    if (suits.size === 1) possibleHands[Hand.StraightFlush].push(straight)
+    if (suits.size === 1) dealtHands[Hand.StraightFlush].push(straight)
 
-    if (straight[0].rank === Rank.Ace) possibleHands[Hand.RoyalFlush].push(straight)
+    if (straight[0].rank === Rank.Ace) dealtHands[Hand.RoyalFlush].push(straight)
   }
 
-  return possibleHands
+  return dealtHands
 }
 
-const findStraight = (cards: Card[], straight: Card[]): Card[] => {
-  if (cards.length + straight.length < 5) return []
-  if (straight.length === 5) return straight
-  if (cards.length === 0) return straight
+export const getHighHand = (hands: Record<Hand, Card[][]>): [Hand, Card[]] => {
+  const sortedHands = Object.entries(hands)
+    .filter(([_hand, cards]) => cards.length > 0)
+    .sort((a, b) => parseInt(b[0]) - parseInt(a[0]))
 
-  const nextCard = cards.shift()
-
-  if (nextCard) {
-    if (straight.length === 0) return findStraight(cards, [nextCard])
-    else {
-      if (straight[0].rank - 1 === nextCard.rank)
-        return findStraight(cards, [nextCard, ...straight])
-      else return findStraight(cards, [nextCard])
-    }
-  } else return findStraight([], [])
-}
-
-export const getHands = (holeCards: Card[], communityCards: Card[]): Hand => {
-  const cards: Card[] = holeCards.concat(communityCards)
-  let hands: Hand[] = [Hand.HighCard]
-
-  let rankFrequencies = new Map<Rank, number>([])
-  let suitFrequencies = new Map<Suit, number>([])
-  cards.forEach((card) => {
-    if (rankFrequencies.has(card.rank)) {
-      let count = rankFrequencies.get(card.rank) || 1
-      rankFrequencies.set(card.rank, count + 1)
-    } else {
-      rankFrequencies.set(card.rank, 1)
-    }
-
-    if (suitFrequencies.has(card.suit)) {
-      let count = suitFrequencies.get(card.suit) || 1
-      suitFrequencies.set(card.suit, count + 1)
-    } else {
-      suitFrequencies.set(card.suit, 1)
-    }
-  })
-
-  const rankCounts: number[] = Array.from(rankFrequencies.values())
-  if (rankCounts.includes(4)) hands.push(Hand.FourOfAKind)
-  if (rankCounts.includes(3) && rankCounts.includes(2)) hands.push(Hand.FullHouse)
-  if (rankCounts.includes(3)) hands.push(Hand.ThreeOfAKind)
-
-  const pairs: number[] = rankCounts.filter((c) => c == 2)
-  if (pairs.length >= 2) hands.push(Hand.TwoPair)
-  if (pairs.length == 1) hands.push(Hand.Pair)
-
-  const suitCounts: number[] = Array.from(suitFrequencies.values())
-  let isFlush = suitCounts.includes(5)
-  if (isFlush) hands.push(Hand.Flush)
-
-  let possibleStraight: Rank[] = []
-  const ranks: Rank[] = [
-    ...new Set(cards.map((card) => card.rank).sort((rankA, rankB) => rankA - rankB))
-  ]
-
-  for (const [index, rank] of ranks.entries()) {
-    if (index === 0) possibleStraight.push(rank)
-    else {
-      const lastRank: Rank = possibleStraight[possibleStraight.length - 1]
-      const nextRank: Rank = lastRank + 1
-      if (rank === nextRank) possibleStraight.push(rank)
-      else if (possibleStraight.length >= 5) continue
-      else possibleStraight = [rank]
-    }
-  }
-
-  const isStraight =
-    possibleStraight.length >= 5 &&
-    possibleStraight
-      .map((rank, index) => rank === index + possibleStraight[0])
-      .reduce((boolA, boolB) => boolA && boolB)
-
-  if (isStraight) {
-    if (isFlush) {
-      const hasAceHigh = possibleStraight[possibleStraight.length - 1] === Rank.Ace
-      if (hasAceHigh) hands.push(Hand.RoyalFlush)
-      hands.push(Hand.StraightFlush)
-    }
-    hands.push(Hand.Straight)
-  }
-
-  return hands.sort((handA: Hand, handB: Hand) => handB - handA)[0]
+  return [Hand[sortedHands[0][0] as keyof typeof Hand], sortedHands[0][1][0]]
 }
