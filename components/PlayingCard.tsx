@@ -53,7 +53,7 @@ import JackSpades from "../assets/images/cards/Jack.Spades.png"
 import QueenSpades from "../assets/images/cards/Queen.Spades.png"
 import KingSpades from "../assets/images/cards/King.Spades.png"
 import AceSpades from "../assets/images/cards/Ace.Spades.png"
-import { Image } from "react-native"
+import { Image, StyleSheet } from "react-native"
 
 export enum Suit {
   Clubs,
@@ -161,17 +161,40 @@ export const pokerCards = new Map([
 type Props = {
   rank: Rank
   suit: Suit
+  isHighlighted?: boolean
 }
 
-export const PlayingCard = ({ rank, suit }: Props) => {
-  return (
-    <Image
-      source={pokerCards.get(suit)?.get(rank)}
-      style={{ height: 90, width: 62, marginHorizontal: 5 }}
-    />
-  )
+export const PlayingCard = ({ rank, suit, isHighlighted = false }: Props) => {
+  const highlightedStyle = {
+    borderColor: "dodgerblue",
+    borderWidth: 5,
+    borderRadius: 5
+  }
+  const cardStyle = isHighlighted ? { ...styles.card, ...highlightedStyle } : styles.card
+
+  return <Image source={pokerCards.get(suit)?.get(rank)} style={cardStyle} />
 }
 
 export const displayCard = (card: Card) => (
   <PlayingCard key={`${Rank[card.rank]}${Suit[card.suit]}`} rank={card.rank} suit={card.suit} />
 )
+
+export const displayCardResult = (card: Card, hand: Card[]) => {
+  const cardInHand = hand.some((c) => c.rank === card.rank && c.suit === card.suit)
+  return (
+    <PlayingCard
+      key={`${Rank[card.rank]}${Suit[card.suit]}`}
+      rank={card.rank}
+      suit={card.suit}
+      isHighlighted={cardInHand}
+    />
+  )
+}
+
+const styles = StyleSheet.create({
+  card: {
+    height: 90,
+    width: 62,
+    marginHorizontal: 5
+  }
+})

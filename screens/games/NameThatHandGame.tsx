@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
-import { Card, displayCard, pokerCards } from "../../components/PlayingCard"
+import { Card, displayCard, displayCardResult, pokerCards } from "../../components/PlayingCard"
 import { getHands, getHighHand, Hand } from "../../components/PokerHand"
 import ScrollHandPicker from "../../components/ScrollHandPicker"
 import { AnswerBadge } from "../../components/AnswerBadge"
@@ -32,6 +32,7 @@ export default function NameThatHandGame() {
   const [communityCards, setCommunityCards] = useState<Card[]>([])
   const [holeCards, setHoleCards] = useState<Card[]>([])
   const [highHand, setHighHand] = useState<Hand>()
+  const [highHandCards, setHighHandCards] = useState<Card[]>([])
   const [correctAnswer, setCorrectAnswer] = useState<string>()
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
@@ -67,12 +68,26 @@ export default function NameThatHandGame() {
   useEffect(() => {
     const highHandWithCards = getHighHand(getHands(holeCards, communityCards))
     setHighHand(highHandWithCards[0])
+    setHighHandCards(highHandWithCards[1])
   }, [holeCards, communityCards])
 
   return (
     <View style={styles.container}>
-      <View style={styles.community}>{communityCards.map(displayCard)}</View>
-      <View style={styles.hole}>{holeCards.map(displayCard)}</View>
+      {isAnswering ? (
+        <>
+          <View style={styles.community}>{communityCards.map(displayCard)}</View>
+          <View style={styles.hole}>{holeCards.map(displayCard)}</View>
+        </>
+      ) : (
+        <>
+          <View style={styles.community}>
+            {communityCards.map((card) => displayCardResult(card, highHandCards))}
+          </View>
+          <View style={styles.hole}>
+            {holeCards.map((card) => displayCardResult(card, highHandCards))}
+          </View>
+        </>
+      )}
       <View style={{ flex: 2, justifyContent: "space-around", alignItems: "center" }}>
         <ScrollHandPicker onSubmit={submitAnswer} isDisabled={!isAnswering} />
         {correctAnswer ? (
