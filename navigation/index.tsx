@@ -55,22 +55,7 @@ function RootNavigator() {
         component={NameThatHandGame}
         options={({ navigation }: RootTabScreenProps<"NameThatHandGame">) => ({
           title: "",
-          headerStyle: { shadowOpacity: 0, elevation: 0 },
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("CheatSheetModal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1
-              })}
-            >
-              <MaterialCommunityIcons
-                name="cards-playing-spade-multiple"
-                size={35}
-                color={Colors[colorScheme].tabIconDefault}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          )
+          headerStyle: { shadowOpacity: 0, elevation: 0 }
         })}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>

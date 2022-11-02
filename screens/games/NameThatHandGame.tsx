@@ -1,10 +1,14 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
-import { StyleSheet, View } from "react-native"
+import { Pressable, StyleSheet, View } from "react-native"
 import { Card, displayCard, displayCardResult, pokerCards } from "../../components/PlayingCard"
 import { getHands, getHighHand, Hand } from "../../components/PokerHand"
 import ScrollHandPicker from "../../components/ScrollHandPicker"
 import { AnswerBadge } from "../../components/AnswerBadge"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import Colors from "../../constants/Colors"
+import { RootTabScreenProps } from "../../types"
+import useColorScheme from "../../hooks/useColorScheme"
 
 const fullDeck = (): Card[] => {
   let deck: Card[] = []
@@ -27,7 +31,7 @@ function shuffle(array: any) {
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
-export default function NameThatHandGame() {
+export default function NameThatHandGame({ navigation }: RootTabScreenProps<"NameThatHandGame">) {
   const [deck, setDeck] = useState<Card[]>(fullDeck())
   const [communityCards, setCommunityCards] = useState<Card[]>([])
   const [holeCards, setHoleCards] = useState<Card[]>([])
@@ -36,6 +40,8 @@ export default function NameThatHandGame() {
   const [correctAnswer, setCorrectAnswer] = useState<string>()
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
+
+  const colorScheme = useColorScheme()
 
   const shuffleDeck = () => setDeck(shuffle(fullDeck()))
   const submitAnswer = async (answer: string) => {
@@ -90,7 +96,7 @@ export default function NameThatHandGame() {
           </View>
         </>
       )}
-      <View style={{ flex: 2, justifyContent: "space-around", alignItems: "center" }}>
+      <View style={styles.scrollPicker}>
         <ScrollHandPicker onSubmit={submitAnswer} isDisabled={!isAnswering} />
         {correctAnswer ? (
           <AnswerBadge
@@ -98,6 +104,21 @@ export default function NameThatHandGame() {
             text={answerCorrect ? "" : correctAnswer?.toString() || ""}
           />
         ) : null}
+      </View>
+      <View style={styles.cheatSheet}>
+        <Pressable
+          onPress={() => navigation.navigate("CheatSheetModal")}
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.5 : 1
+          })}
+        >
+          <MaterialCommunityIcons
+            name="cards-playing-spade-multiple"
+            size={35}
+            color={Colors[colorScheme].tabIconDefault}
+            style={{ marginRight: 15 }}
+          />
+        </Pressable>
       </View>
     </View>
   )
@@ -112,14 +133,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   community: {
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
     justifyContent: "center"
   },
   hole: {
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
     justifyContent: "center"
+  },
+  scrollPicker: {
+    flex: 4,
+    justifyContent: "space-around",
+    alignItems: "center"
   },
   button: {
     paddingHorizontal: 20,
@@ -145,5 +171,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingVertical: 20,
     paddingHorizontal: 60
+  },
+  cheatSheet: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "flex-end"
   }
 })
