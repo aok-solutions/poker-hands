@@ -1,4 +1,4 @@
-import { getHands, Hand } from "../PokerHand"
+import { getHands, getHighHand, Hand } from "../PokerHand"
 import { Rank, Suit } from "../PlayingCard"
 
 describe("PokerHand.getHands", () => {
@@ -87,6 +87,29 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Queen, suit: Suit.Clubs },
         { rank: Rank.Nine, suit: Suit.Hearts },
         { rank: Rank.Nine, suit: Suit.Diamonds }
+      ])
+    })
+
+    it("returns two pair", () => {
+      let communityCards = [
+        { rank: Rank.Ace, suit: Suit.Hearts },
+        { rank: Rank.Ten, suit: Suit.Diamonds },
+        { rank: Rank.Eight, suit: Suit.Hearts },
+        { rank: Rank.Five, suit: Suit.Diamonds },
+        { rank: Rank.Ace, suit: Suit.Clubs }
+      ]
+
+      let holeCards = [
+        { rank: Rank.Ten, suit: Suit.Hearts },
+        { rank: Rank.Five, suit: Suit.Hearts }
+      ]
+
+      // need to sort the hands
+      expect(getHands(holeCards, communityCards)[Hand.TwoPair]).toContainEqual([
+        { rank: Rank.Ace, suit: Suit.Hearts },
+        { rank: Rank.Ace, suit: Suit.Clubs },
+        { rank: Rank.Ten, suit: Suit.Hearts },
+        { rank: Rank.Ten, suit: Suit.Diamonds }
       ])
     })
   })
