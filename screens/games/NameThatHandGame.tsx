@@ -41,8 +41,10 @@ export default function NameThatHandGame() {
   const submitAnswer = async (answer: string) => {
     setIsAnswering(false)
 
+    answer = answer.trim().length == 0 ? "HighCard" : answer
     const highestHand: string = highHand ? highHand.toString() : Hand.HighCard.toString()
     const isAnswerCorrect = answer === highestHand
+
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
 
