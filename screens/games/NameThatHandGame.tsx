@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import Colors from "../../constants/Colors"
 import { RootTabScreenProps } from "../../types"
 import useColorScheme from "../../hooks/useColorScheme"
+import { Timer } from "../../components/Timer"
 
 const fullDeck = (): Card[] => {
   let deck: Card[] = []
@@ -40,7 +41,9 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [correctAnswer, setCorrectAnswer] = useState<string>()
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
+  const [timer, setTimer] = useState<number>(30)
 
+  const ZERO = 0
   const colorScheme = useColorScheme()
 
   const shuffleDeck = () => setDeck(shuffle(fullDeck()))
@@ -53,6 +56,8 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
 
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
+
+    isAnswerCorrect ? setTimer((time) => time + 5) : setTimer((time) => time - 5)
 
     const delayDuration = isAnswerCorrect ? 1000 : 3000
 
@@ -78,6 +83,17 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     setHighHand(highHandWithCards[0])
     setHighHandCards(highHandWithCards[1])
   }, [holeCards, communityCards])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isAnswering) setTimer((time) => time - 1)
+    }, 1000)
+    if (timer <= ZERO) {
+      setTimer(0)
+      clearInterval(interval)
+    }
+    return () => clearInterval(interval)
+  })
 
   return (
     <View style={styles.container}>
@@ -119,6 +135,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             style={{ marginRight: 15 }}
           />
         </Pressable>
+        <Timer time={timer} />
       </View>
     </View>
   )
@@ -175,7 +192,7 @@ const styles = StyleSheet.create({
   cheatSheet: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "flex-end"
   }
 })
