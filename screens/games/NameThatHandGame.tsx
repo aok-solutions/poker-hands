@@ -1,18 +1,19 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import { Pressable, StyleSheet, View } from "react-native"
+
+import { AnswerBadge } from "../../components/AnswerBadge"
 import { Card, displayCard, displayCardResult, pokerCards } from "../../components/PlayingCard"
 import { getHands, getHighHand, Hand } from "../../components/PokerHand"
 import ScrollHandPicker from "../../components/ScrollHandPicker"
-import { AnswerBadge } from "../../components/AnswerBadge"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
-import Colors from "../../constants/Colors"
-import { RootTabScreenProps } from "../../types"
-import useColorScheme from "../../hooks/useColorScheme"
 import { Timer } from "../../components/Timer"
+import Colors from "../../constants/Colors"
+import useColorScheme from "../../hooks/useColorScheme"
+import { RootTabScreenProps } from "../../types"
 
 const fullDeck = (): Card[] => {
-  let deck: Card[] = []
+  const deck: Card[] = []
   Array.from(pokerCards.entries()).forEach(([suit, ranks]) => {
     Array.from(ranks.keys()).forEach((rank) => deck.push({ rank, suit }))
   })
@@ -22,7 +23,7 @@ const fullDeck = (): Card[] => {
 
 function shuffle(array: any) {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1)) // random index from 0 to i
+    const j = Math.floor(Math.random() * (i + 1)) // random index from 0 to i
 
     ;[array[i], array[j]] = [array[j], array[i]]
   }
@@ -97,6 +98,22 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
 
   return (
     <View style={styles.container}>
+      <View style={styles.cheatSheet}>
+        <Pressable
+          onPress={() => navigation.navigate("CheatSheetModal")}
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.5 : 1
+          })}
+        >
+          <MaterialCommunityIcons
+            name="cards-playing-spade-multiple"
+            size={40}
+            color={Colors[colorScheme].tabIconDefault}
+            style={{ marginRight: 15, marginTop: 10 }}
+          />
+        </Pressable>
+        <Timer time={timer} />
+      </View>
       {isAnswering ? (
         <>
           <View style={styles.community}>{communityCards.map(displayCard)}</View>
@@ -121,22 +138,6 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
           />
         ) : null}
       </View>
-      <View style={styles.cheatSheet}>
-        <Pressable
-          onPress={() => navigation.navigate("CheatSheetModal")}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1
-          })}
-        >
-          <MaterialCommunityIcons
-            name="cards-playing-spade-multiple"
-            size={35}
-            color={Colors[colorScheme].tabIconDefault}
-            style={{ marginRight: 15 }}
-          />
-        </Pressable>
-        <Timer time={timer} />
-      </View>
     </View>
   )
 }
@@ -145,7 +146,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 80,
+    paddingTop: 20,
+    paddingBottom: 90,
     flexDirection: "column",
     backgroundColor: "white"
   },
@@ -190,9 +192,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60
   },
   cheatSheet: {
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end"
+    justifyContent: "space-between"
   }
 })
