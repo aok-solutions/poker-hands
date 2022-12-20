@@ -51,22 +51,23 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const submitAnswer = async (answer: string) => {
     setIsAnswering(false)
 
-    answer = answer.trim().length == 0 ? "HighCard" : answer
+    answer = answer.trim().length === 0 ? "HighCard" : answer
     const highestHand: string = highHand ? highHand.toString() : Hand.HighCard.toString()
     const isAnswerCorrect = answer === highestHand
 
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
 
-    isAnswerCorrect ? setTimer((time) => time + 5) : setTimer((time) => time - 5)
+    if (isAnswerCorrect) setTimer((time) => time + 5)
+    else setTimer((time) => time - 5)
 
     const delayDuration = isAnswerCorrect ? 1000 : 3000
 
     await delay(delayDuration)
-    resetState()
+    resumeGame()
   }
 
-  const resetState = () => {
+  const resumeGame = () => {
     shuffleDeck()
     setCorrectAnswer(undefined)
     setIsAnswering(true)
