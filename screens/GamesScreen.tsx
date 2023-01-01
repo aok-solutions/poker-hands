@@ -1,34 +1,41 @@
-import { StyleSheet } from "react-native"
-import { AppleCard } from "react-native-apple-card-views"
+import { ScrollView } from "react-native"
+import { Button, Card, Text, View } from "react-native-ui-lib"
 
-import { View } from "../components/Themed"
 import { RootTabScreenProps } from "../types"
 import nameThatHandImage from "../assets/images/name-that-hand.png"
+import chipsStackedImage from "../assets/images/chips-stacked.png"
+import { FontAwesome } from "@expo/vector-icons"
+import * as React from "react"
 
 export default function GamesScreen({ navigation }: RootTabScreenProps<"Games">) {
+  const borderRadius = 15
   return (
-    <View style={styles.container}>
-      <AppleCard
-        smallTitle=""
-        largeTitle="Name That Hand"
-        largeTitleTextStyle={{ fontSize: 50 }}
-        backgroundStyle={{
-          height: 300
-        }}
-        footnoteText="Select the possible hand combinations!"
-        resizeMode="cover"
-        source={nameThatHandImage}
-        onPress={() => navigation.navigate("NameThatHandGame")}
-      />
+    <View flex backgroundColor="white">
+      <ScrollView>
+        <View paddingV-50 paddingH-20>
+          <Text text40 $textDefault marginB-20>Games</Text>
+          <Card row marginB-30 borderRadius={borderRadius}>
+            <View flex-3 padding-20>
+              <Text text60 $textDefault>Name That Hand</Text>
+              <Text text70 $textDefault>Select the possible hand combinations!</Text>
+              <View row>
+                <Button text90 marginT-30 label="Play Now" onPress={() => navigation.navigate("NameThatHandGame")} iconOnRight iconSource={_iconStyle => <FontAwesome size={10} color="white" style={{ marginLeft: 5 }} name="arrow-right" />} />
+              </View>
+            </View>
+            <Card.Section flex-2 imageSource={nameThatHandImage} imageStyle={{ width: "100%", height: 180 }} />
+          </Card>
+          <Card row marginB-30 borderRadius={borderRadius}>
+            <Card.Section flex-2 imageSource={chipsStackedImage} imageStyle={{ width: "100%", height: 180 }} />
+            <View flex-3 padding-20>
+              <Text text60 $textDefault>High Hand</Text>
+              <Text text70 $textDefault>Which hand trumps the other?</Text>
+              <View row>
+                <Button text90 marginT-30 link label="Coming Soon" />
+              </View>
+            </View>
+          </Card>
+        </View>
+      </ScrollView>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingVertical: 50
-  }
-})
