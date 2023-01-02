@@ -103,8 +103,12 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
       </View>
       {isAnswering ? (
         <>
-          <View flex-2 row style={{ justifyContent: "center" }}>{communityCards.map(displayCard)}</View>
-          <View flex-2 row style={{ justifyContent: "center" }}>{holeCards.map(displayCard)}</View>
+          <View flex-2 row style={{ justifyContent: "center" }}>
+            {communityCards.map(displayCard)}
+          </View>
+          <View flex-2 row style={{ justifyContent: "center" }}>
+            {holeCards.map(displayCard)}
+          </View>
         </>
       ) : (
         <>

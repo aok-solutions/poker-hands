@@ -7,7 +7,7 @@ module.exports = function (api) {
         "module-resolver",
         {
           root: ["./"],
-          extensions: [".js", ".jsx", ".json", ".ts", ".tsx", ".png"],
+          extensions: [".js", ".jsx", ".json", ".ts", ".tsx", ".png"]
         }
       ],
       "react-native-reanimated/plugin"

@@ -13,11 +13,16 @@ type Props = {
   isDisabled: boolean
 }
 
-export default function ScrollHandPicker({ correctAnswer, answerCorrect, onSubmit, isDisabled }: Props): JSX.Element {
+export default function ScrollHandPicker({
+  correctAnswer,
+  answerCorrect,
+  onSubmit,
+  isDisabled
+}: Props): JSX.Element {
   const [selectedValue, setSelectedValue] = useState("")
 
   const toOption = (value: string) => {
-    return { label: value, value  }
+    return { label: value, value }
   }
 
   return (
@@ -25,8 +30,10 @@ export default function ScrollHandPicker({ correctAnswer, answerCorrect, onSubmi
       <View flex-3 center margin-10 styles={{ overflow: "hidden", borderRadius: 10 }}>
         <View>
           <Incubator.WheelPicker
-            items={Object.keys(Hand).filter((key) => !isNaN(Number(Hand[key]))).map(toOption)}
-            onChange={((data: string) => setSelectedValue(data))}
+            items={Object.keys(Hand)
+              .filter((key) => !isNaN(Number(Hand[key])))
+              .map(toOption)}
+            onChange={(data: string) => setSelectedValue(data)}
             itemHeight={50}
           />
         </View>
@@ -37,7 +44,7 @@ export default function ScrollHandPicker({ correctAnswer, answerCorrect, onSubmi
             label={selectedValue || "HighCard"}
             onPress={() => onSubmit(selectedValue)}
             iconOnRight
-            iconSource={_iconStyle => (
+            iconSource={(_iconStyle) => (
               <FontAwesome name="arrow-up" size={20} color="white" style={{ marginLeft: 10 }} />
             )}
             disabled={isDisabled}
