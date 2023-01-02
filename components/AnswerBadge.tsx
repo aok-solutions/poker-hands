@@ -40,7 +40,7 @@ export const AnswerBadge = (props: AnswerBadgeProps) => {
 const styles = StyleSheet.create({
   badge: {
     position: "absolute",
-    top: -5,
-    left: -15
+    top: -28,
+    left: -10
   }
 })

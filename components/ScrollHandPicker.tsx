@@ -1,93 +1,55 @@
-import { View } from "components/Themed"
-import { Pressable, StyleSheet, Text, ViewStyle } from "react-native"
-import * as React from "react"
-import { Hand } from "components/PokerHand"
-import { FontAwesome } from "@expo/vector-icons"
 import { useState } from "react"
-import ScrollPicker from "components/ScrollPicker"
+import { FontAwesome } from "@expo/vector-icons"
+import { Button, Incubator, View } from "react-native-ui-lib"
+
+import { Hand } from "components/PokerHand"
+import * as React from "react"
+import { AnswerBadge } from "./AnswerBadge"
 
 type Props = {
-  height?: number
+  correctAnswer?: string
+  answerCorrect: boolean
   onSubmit: (value: string) => void
   isDisabled: boolean
 }
 
-export default function ScrollHandPicker({
-  height = 80,
-  onSubmit,
-  isDisabled
-}: Props): JSX.Element {
+export default function ScrollHandPicker({ correctAnswer, answerCorrect, onSubmit, isDisabled }: Props): JSX.Element {
   const [selectedValue, setSelectedValue] = useState("")
-  const propStyles: ViewStyle = {
-    height: height
+
+  const toOption = (value: string) => {
+    return { label: value, value  }
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.scrollPickerContainer}>
-        <View style={styles.scrollPicker}>
-          <ScrollPicker
-            dataSource={Object.keys(Hand).filter((key) => !isNaN(Number(Hand[key])))}
-            selectedIndex={0}
-            renderItem={(data: string) => <Text>{data}</Text>}
-            onValueChange={(data: string) => setSelectedValue(data)}
-            wrapperHeight={300}
-            wrapperColor="#FFFFFF"
-            itemHeight={80}
-            highlightColor="#d8d8d8"
-            highlightBorderWidth={1}
-            disabled={isDisabled}
+    <View flex row>
+      <View flex-3 center margin-10 styles={{ overflow: "hidden", borderRadius: 10 }}>
+        <View>
+          <Incubator.WheelPicker
+            items={Object.keys(Hand).filter((key) => !isNaN(Number(Hand[key]))).map(toOption)}
+            onChange={((data: string) => setSelectedValue(data))}
+            itemHeight={50}
           />
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable
-          style={[styles.submitButton, propStyles]}
-          onPress={() => onSubmit(selectedValue)}
-          disabled={isDisabled}
-        >
-          <FontAwesome name="arrow-up" size={40} color="white" />
-        </Pressable>
+      <View flex-2 row center>
+        <View flex>
+          <Button
+            label={selectedValue || "HighCard"}
+            onPress={() => onSubmit(selectedValue)}
+            iconOnRight
+            iconSource={_iconStyle => (
+              <FontAwesome name="arrow-up" size={20} color="white" style={{ marginLeft: 10 }} />
+            )}
+            disabled={isDisabled}
+          />
+          {correctAnswer ? (
+            <AnswerBadge
+              answerCorrect={answerCorrect}
+              text={answerCorrect ? "" : correctAnswer?.toString() || ""}
+            />
+          ) : null}
+        </View>
       </View>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row"
-  },
-  scrollPickerContainer: {
-    flex: 8,
-    flexDirection: "column",
-    justifyContent: "center",
-    overflow: "hidden",
-    borderColor: "#d8d8d8",
-    borderWidth: 2,
-    borderRadius: 10,
-    margin: 10
-  },
-  scrollPicker: {
-    height: 300
-  },
-  buttonContainer: {
-    flex: 3,
-    flexDirection: "column",
-    justifyContent: "center"
-  },
-  buttonLabel: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "white",
-    textAlign: "center"
-  },
-  submitButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    borderRadius: 10,
-    backgroundColor: "lightblue"
-  }
-})
