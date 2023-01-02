@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native"
 
-import { View } from "../components/Themed"
+import { View } from "components/Themed"
 
 export default function PreferencesScreen() {
   return <View style={styles.container}></View>

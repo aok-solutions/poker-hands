@@ -1,5 +1,5 @@
-import { getHands, getHighHand, Hand } from "../PokerHand"
-import { Rank, Suit } from "../PlayingCard"
+import { getHands, Hand } from "components/PokerHand"
+import { Rank, Suit } from "components/PlayingCard"
 
 describe("PokerHand.getHands", () => {
   describe("with no major hands", () => {

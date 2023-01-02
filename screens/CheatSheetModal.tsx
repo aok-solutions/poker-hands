@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar"
 import { Image, Platform, StyleSheet } from "react-native"
 
-import { View } from "../components/Themed"
-import pokerHands from "../assets/images/poker-hands.png"
+import { View } from "components/Themed"
+import pokerHands from "assets/images/poker-hands.png"
 
 export default function CheatSheetModal() {
   return (

@@ -1,10 +1,10 @@
-import { View } from "./Themed"
+import { View } from "components/Themed"
 import { Pressable, StyleSheet, Text, ViewStyle } from "react-native"
 import * as React from "react"
-import { Hand } from "./PokerHand"
+import { Hand } from "components/PokerHand"
 import { FontAwesome } from "@expo/vector-icons"
 import { useState } from "react"
-import ScrollPicker from "./ScrollPicker"
+import ScrollPicker from "components/ScrollPicker"
 
 type Props = {
   height?: number

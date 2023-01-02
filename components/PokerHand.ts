@@ -1,4 +1,4 @@
-import { Card, Rank, Suit } from "./PlayingCard"
+import { Card, Rank, Suit } from "components/PlayingCard"
 
 export enum Hand {
   HighCard,

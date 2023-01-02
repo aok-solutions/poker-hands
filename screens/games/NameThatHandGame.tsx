@@ -3,14 +3,14 @@ import * as React from "react"
 import { useEffect, useState } from "react"
 import { Pressable, StyleSheet, View } from "react-native"
 
-import { AnswerBadge } from "../../components/AnswerBadge"
-import { Card, displayCard, displayCardResult, pokerCards } from "../../components/PlayingCard"
-import { getHands, getHighHand, Hand } from "../../components/PokerHand"
-import ScrollHandPicker from "../../components/ScrollHandPicker"
-import { Timer } from "../../components/Timer"
-import Colors from "../../constants/Colors"
-import useColorScheme from "../../hooks/useColorScheme"
-import { RootTabScreenProps } from "../../types"
+import { AnswerBadge } from "components/AnswerBadge"
+import { Card, displayCard, displayCardResult, pokerCards } from "components/PlayingCard"
+import { getHands, getHighHand, Hand } from "components/PokerHand"
+import ScrollHandPicker from "components/ScrollHandPicker"
+import { Timer } from "components/Timer"
+import Colors from "constants/Colors"
+import useColorScheme from "hooks/useColorScheme"
+import { RootTabScreenProps } from "types"
 
 const fullDeck = (): Card[] => {
   const deck: Card[] = []

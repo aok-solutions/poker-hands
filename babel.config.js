@@ -5,7 +5,10 @@ module.exports = function (api) {
     plugins: [
       [
         "module-resolver",
-        { extensions: [".tsx", ".ts", ".js", ".json"] }
+        {
+          root: ["./"],
+          extensions: [".js", ".jsx", ".json", ".ts", ".tsx", ".png"],
+        }
       ],
       "react-native-reanimated/plugin"
     ]

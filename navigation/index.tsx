@@ -3,22 +3,22 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons"
+import { FontAwesome } from "@expo/vector-icons"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import * as React from "react"
-import { ColorSchemeName, Pressable } from "react-native"
+import { ColorSchemeName } from "react-native"
 
-import Colors from "../constants/Colors"
-import useColorScheme from "../hooks/useColorScheme"
-import CheatSheetModal from "../screens/CheatSheetModal"
-import NotFoundScreen from "../screens/NotFoundScreen"
-import GamesScreen from "../screens/GamesScreen"
-import PreferencesScreen from "../screens/PreferencesScreen"
-import NameThatHandGame from "../screens/games/NameThatHandGame"
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from "../types"
-import LinkingConfiguration from "./LinkingConfiguration"
+import Colors from "constants/Colors"
+import useColorScheme from "hooks/useColorScheme"
+import CheatSheetModal from "screens/CheatSheetModal"
+import NotFoundScreen from "screens/NotFoundScreen"
+import GamesScreen from "screens/GamesScreen"
+import PreferencesScreen from "screens/PreferencesScreen"
+import NameThatHandGame from "screens/games/NameThatHandGame"
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from "types"
+import LinkingConfiguration from "navigation/LinkingConfiguration"
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
