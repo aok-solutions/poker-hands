@@ -122,10 +122,10 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
       )}
       <View flex-4 center>
         <ScrollHandPicker
-          correctAnswer={correctAnswer}
-          answerCorrect={answerCorrect}
+          isAnswering={isAnswering}
+          answer={correctAnswer}
+          isCorrectAnswer={answerCorrect}
           onSubmit={submitAnswer}
-          isDisabled={!isAnswering}
         />
       </View>
       <View flex row>
