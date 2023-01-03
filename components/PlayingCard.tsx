@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native"
-import { Image, View } from "react-native-ui-lib"
+import { Colors, Image, View } from "react-native-ui-lib"
 
 import TwoClubs from "assets/images/cards/Two.Clubs.png"
 import ThreeClubs from "assets/images/cards/Three.Clubs.png"
@@ -167,9 +167,8 @@ type Props = {
 }
 
 export const PlayingCard = ({ rank, suit, isHighlighted = false }: Props) => {
-  const highlightColor = "#5A48F5"
   const borderStyle = isHighlighted
-    ? { ...styles.highlight, borderColor: highlightColor }
+    ? { ...styles.highlight, borderColor: Colors.primary }
     : styles.highlight
 
   return (

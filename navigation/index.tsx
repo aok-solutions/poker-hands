@@ -7,11 +7,9 @@ import { FontAwesome } from "@expo/vector-icons"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import * as React from "react"
 import { ColorSchemeName } from "react-native"
+import { Colors } from "react-native-ui-lib"
 
-import Colors from "constants/Colors"
-import useColorScheme from "hooks/useColorScheme"
 import CheatSheetModal from "screens/CheatSheetModal"
 import NotFoundScreen from "screens/NotFoundScreen"
 import GamesScreen from "screens/GamesScreen"
@@ -38,14 +36,12 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
-  const colorScheme = useColorScheme()
-
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTintColor: Colors[colorScheme].tint,
         headerShadowVisible: false,
-        headerBackTitleVisible: false
+        headerBackTitleVisible: false,
+        headerTintColor: Colors.primary
       }}
     >
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
@@ -76,14 +72,12 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>()
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme()
-
   return (
     <BottomTab.Navigator
       initialRouteName="Games"
       screenOptions={{
         tabBarStyle: { borderTopWidth: 0, elevation: 0 },
-        tabBarActiveTintColor: Colors[colorScheme].tint
+        tabBarActiveTintColor: Colors.primary
       }}
     >
       <BottomTab.Screen

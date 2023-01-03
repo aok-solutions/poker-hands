@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { StyleSheet } from "react-native"
 import { FontAwesome } from "@expo/vector-icons"
 import { Chip } from "@rneui/themed"
-import { Button, Incubator, View } from "react-native-ui-lib"
+import { Button, Colors, Incubator, View } from "react-native-ui-lib"
 
 import { Hand } from "components/PokerHand"
 
@@ -14,7 +14,6 @@ type Props = {
 }
 
 type icon = "arrow-up" | "check" | "ban"
-type color = "#5A48F5" | "#00A87E" | "#FC3D2F"
 
 export default function ScrollHandPicker({
   isAnswering,
@@ -25,7 +24,7 @@ export default function ScrollHandPicker({
   const [selectedValue, setSelectedValue] = useState("")
   const [submittedAnswer, setSubmittedAnswer] = useState("")
   const [buttonIcon, setButtonIcon] = useState<icon>("arrow-up")
-  const [buttonColor, setButtonColor] = useState<color>("#5A48F5")
+  const [buttonColor, setButtonColor] = useState(Colors.primary)
 
   const toOption = (value: string) => {
     return { label: value, value }
@@ -36,19 +35,19 @@ export default function ScrollHandPicker({
   useEffect(() => {
     if (isAnswering) {
       setButtonIcon("arrow-up")
-      setButtonColor("#5A48F5")
+      setButtonColor(Colors.primary)
     } else if (isCorrectAnswer) {
       setButtonIcon("check")
-      setButtonColor("#00A87E")
+      setButtonColor(Colors.green40)
     } else {
       setButtonIcon("ban")
-      setButtonColor("#FC3D2F")
+      setButtonColor(Colors.red30)
     }
   }, [isAnswering, isCorrectAnswer])
 
   return (
     <View flex row>
-      <View flex-3 center margin-10 styles={{ overflow: "hidden", borderRadius: 10 }}>
+      <View flex-3 center margin-10 style={{ overflow: "hidden", borderRadius: 10 }}>
         <View>
           <Incubator.WheelPicker
             items={Object.keys(Hand)
@@ -72,13 +71,18 @@ export default function ScrollHandPicker({
             }}
             iconOnRight
             iconSource={(_iconStyle) => (
-              <FontAwesome name={buttonIcon} size={20} color="white" style={{ marginLeft: 10 }} />
+              <FontAwesome
+                name={buttonIcon}
+                size={20}
+                color={Colors.white}
+                style={{ marginLeft: 10 }}
+              />
             )}
           />
           {!(isCorrectAnswer || isAnswering) ? (
             <Chip
               title={answer?.toString() || ""}
-              color={"lightgrey"}
+              color={Colors.grey20}
               containerStyle={styles.correctAnswer}
             />
           ) : null}

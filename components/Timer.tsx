@@ -1,5 +1,6 @@
-import * as Progress from "react-native-progress"
 import { useEffect, useState } from "react"
+import * as Progress from "react-native-progress"
+import { Colors } from "react-native-ui-lib"
 
 type Props = {
   time: number
@@ -18,5 +19,5 @@ export const Timer = ({ time }: Props) => {
     setTimeRemaining(timeLeft / parseFloat("30"))
   }, [time])
 
-  return <Progress.Pie progress={timeRemaining} size={50} borderWidth={0} color="#5A48F5" />
+  return <Progress.Pie progress={timeRemaining} size={50} borderWidth={0} color={Colors.primary} />
 }
