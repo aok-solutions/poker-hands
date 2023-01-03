@@ -1,3 +1,6 @@
+import { StyleSheet } from "react-native"
+import { Image, View } from "react-native-ui-lib"
+
 import TwoClubs from "assets/images/cards/Two.Clubs.png"
 import ThreeClubs from "assets/images/cards/Three.Clubs.png"
 import FourClubs from "assets/images/cards/Four.Clubs.png"
@@ -53,7 +56,6 @@ import JackSpades from "assets/images/cards/Jack.Spades.png"
 import QueenSpades from "assets/images/cards/Queen.Spades.png"
 import KingSpades from "assets/images/cards/King.Spades.png"
 import AceSpades from "assets/images/cards/Ace.Spades.png"
-import { Image, StyleSheet } from "react-native"
 
 export enum Suit {
   Clubs,
@@ -165,14 +167,18 @@ type Props = {
 }
 
 export const PlayingCard = ({ rank, suit, isHighlighted = false }: Props) => {
-  const highlightedStyle = {
-    borderColor: "dodgerblue",
-    borderWidth: 5,
-    borderRadius: 5
-  }
-  const cardStyle = isHighlighted ? { ...styles.card, ...highlightedStyle } : styles.card
+  const highlightColor = "#5A48F5"
+  const borderStyle = isHighlighted
+    ? { ...styles.highlight, borderColor: highlightColor }
+    : styles.highlight
 
-  return <Image source={pokerCards.get(suit)?.get(rank)} style={cardStyle} />
+  return (
+    <View>
+      <View style={borderStyle}>
+        <Image source={pokerCards.get(suit)?.get(rank)} style={styles.card} />
+      </View>
+    </View>
+  )
 }
 
 export const displayCard = (card: Card) => (
@@ -194,7 +200,12 @@ export const displayCardResult = (card: Card, hand: Card[]) => {
 const styles = StyleSheet.create({
   card: {
     height: 90,
-    width: 62,
-    marginHorizontal: 5
+    width: 62
+  },
+  highlight: {
+    borderColor: "transparent",
+    borderRadius: 5,
+    borderWidth: 3,
+    margin: 3
   }
 })
