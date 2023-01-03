@@ -31,7 +31,7 @@ export default function GamesScreen({ navigation }: RootTabScreenProps<"Games">)
                   label="Play Now"
                   onPress={() => navigation.navigate("NameThatHandGame")}
                   iconOnRight
-                  iconSource={(_iconStyle) => (
+                  iconSource={() => (
                     <FontAwesome
                       size={10}
                       color="white"

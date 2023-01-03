@@ -70,7 +70,7 @@ export default function ScrollHandPicker({
               }
             }}
             iconOnRight
-            iconSource={(_iconStyle) => (
+            iconSource={() => (
               <FontAwesome
                 name={buttonIcon}
                 size={20}
