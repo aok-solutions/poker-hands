@@ -1,7 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons"
 import { useEffect, useState } from "react"
 import { Pressable } from "react-native"
-import { View } from "react-native-ui-lib"
+import { Button, Modal, Text, View } from "react-native-ui-lib"
+import { createMachine } from "xstate"
+import { useMachine } from "@xstate/react"
 
 import { Card, displayCard, displayCardResult, pokerCards } from "components/PlayingCard"
 import { getHands, getHighHand, Hand } from "components/PokerHand"
@@ -32,6 +34,29 @@ function shuffle(array: any) {
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
+const gameStateMachine = createMachine({
+  initial: "ended",
+  states: {
+    playing: {
+      on: {
+        PAUSE: "paused",
+        END: "ended"
+      }
+    },
+    paused: {
+      on: {
+        PLAY: "playing",
+        END: "ended"
+      }
+    },
+    ended: {
+      on: {
+        PLAY: "playing"
+      }
+    }
+  }
+})
+
 export default function NameThatHandGame({ navigation }: RootTabScreenProps<"NameThatHandGame">) {
   const [deck, setDeck] = useState<Card[]>(fullDeck())
   const [communityCards, setCommunityCards] = useState<Card[]>([])
@@ -42,6 +67,13 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
   const [timer, setTimer] = useState<number>(30)
+  const [showModal, setShowModal] = useState(true)
+
+  const [state, send] = useMachine(gameStateMachine)
+
+  const isPlaying = state.value === "playing"
+  const isPaused = state.value === "paused"
+  const isEnded = state.value === "ended"
 
   const ZERO = 0
   const colorScheme = useColorScheme()
@@ -87,7 +119,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (isAnswering) setTimer((time) => time - 1)
+      if (isAnswering && isPlaying) setTimer((time) => time - 1)
     }, 1000)
     if (timer <= ZERO) {
       setTimer(0)
@@ -98,6 +130,24 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
 
   return (
     <View flex paddingH-20 paddingT-20 paddingB-90 bg-white>
+      <Modal visible={showModal}>
+        <View flex center>
+          <View marginB-15>
+            <Text $textDefault text40>
+              Ready?
+            </Text>
+          </View>
+          <Button
+            link
+            iconSource={() => <FontAwesome name="play-circle" color="#ff369b" size={80} />}
+            onPress={() => {
+              setShowModal(false)
+              send("PLAY")
+            }}
+            size={Button.sizes.large}
+          />
+        </View>
+      </Modal>
       <View flex-2 row spread>
         <Timer time={timer} />
       </View>
