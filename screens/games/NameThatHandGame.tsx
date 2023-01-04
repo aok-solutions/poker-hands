@@ -66,7 +66,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [correctAnswer, setCorrectAnswer] = useState<string>()
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
-  const [timer, setTimer] = useState<number>(30)
+  const [timer, setTimer] = useState<number>(1000)
   const [showModal, setShowModal] = useState(true)
 
   const [state, send] = useMachine(gameStateMachine)
@@ -75,7 +75,6 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const isPaused = state.value === "paused"
   const isEnded = state.value === "ended"
 
-  const ZERO = 0
   const colorScheme = useColorScheme()
 
   const shuffleDeck = () => setDeck(shuffle(fullDeck()))
@@ -89,8 +88,8 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
 
-    if (isAnswerCorrect) setTimer((time) => time + 5)
-    else setTimer((time) => time - 5)
+    if (isAnswerCorrect) setTimer((time) => time + 200)
+    else setTimer((time) => time - 300)
 
     const delayDuration = isAnswerCorrect ? 1000 : 3000
 
@@ -120,8 +119,8 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   useEffect(() => {
     const interval = setInterval(() => {
       if (isAnswering && isPlaying) setTimer((time) => time - 1)
-    }, 1000)
-    if (timer <= ZERO) {
+    }, 1)
+    if (timer <= 0) {
       setTimer(0)
       clearInterval(interval)
     }
