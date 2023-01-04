@@ -159,6 +159,29 @@ describe("PokerHand.getHands", () => {
           { rank: Rank.Ace, suit: Suit.Clubs }
         ])
       })
+
+      it("returns a full house", () => {
+        let communityCards = [
+          { rank: Rank.Ace, suit: Suit.Clubs },
+          { rank: Rank.Queen, suit: Suit.Hearts },
+          { rank: Rank.King, suit: Suit.Diamonds },
+          { rank: Rank.King, suit: Suit.Spades },
+          { rank: Rank.Queen, suit: Suit.Diamonds }
+        ]
+
+        let holeCards = [
+          { rank: Rank.King, suit: Suit.Hearts },
+          { rank: Rank.Queen, suit: Suit.Clubs }
+        ]
+
+        expect(getHands(holeCards, communityCards)[Hand.FullHouse]).toContainEqual([
+          { rank: Rank.King, suit: Suit.Spades },
+          { rank: Rank.King, suit: Suit.Hearts },
+          { rank: Rank.King, suit: Suit.Diamonds },
+          { rank: Rank.Queen, suit: Suit.Hearts },
+          { rank: Rank.Queen, suit: Suit.Diamonds }
+        ])
+      })
     })
   })
 
