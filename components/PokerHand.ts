@@ -40,7 +40,7 @@ const findStraight = (cards: Card[], straight: Card[]): Card[] => {
 }
 
 export const getHands = (holeCards: Card[], communityCards: Card[]): Record<Hand, Card[][]> => {
-  let dealtHands: Record<Hand, Card[][]> = {
+  const dealtHands: Record<Hand, Card[][]> = {
     [Hand.RoyalFlush]: [],
     [Hand.StraightFlush]: [],
     [Hand.FourOfAKind]: [],
@@ -53,13 +53,13 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Record<Hand
     [Hand.HighCard]: []
   }
 
-  let groupBySuit: Record<Suit, Card[]> = {
+  const groupBySuit: Record<Suit, Card[]> = {
     [Suit.Spades]: [],
     [Suit.Hearts]: [],
     [Suit.Diamonds]: [],
     [Suit.Clubs]: []
   }
-  let groupByRank: Record<Rank, Card[]> = {
+  const groupByRank: Record<Rank, Card[]> = {
     [Rank.Ace]: [],
     [Rank.King]: [],
     [Rank.Queen]: [],
@@ -84,13 +84,21 @@ export const getHands = (holeCards: Card[], communityCards: Card[]): Record<Hand
   dealtHands[Hand.HighCard].push([sortedCards[0]])
 
   Object.values(groupByRank).forEach((cardsByRank) => {
-    if (cardsByRank.length === 4) dealtHands[Hand.FourOfAKind].push(cardsByRank)
+    if (cardsByRank.length === 4) {
+      dealtHands[Hand.FourOfAKind].push(cardsByRank)
+      dealtHands[Hand.ThreeOfAKind].push(cardsByRank.slice(0, 3))
+      dealtHands[Hand.TwoPair].push([...cardsByRank.slice(0, 2), ...cardsByRank.slice(-2)])
+      dealtHands[Hand.Pair].push(cardsByRank.slice(0, 2))
+    }
     if (cardsByRank.length === 3) {
       dealtHands[Hand.ThreeOfAKind].push(cardsByRank)
+      dealtHands[Hand.Pair].push(cardsByRank.slice(0, 2))
 
       Object.values(groupByRank).forEach((subCardsByRank) => {
         if (subCardsByRank.length === 2)
           dealtHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank])
+        if (subCardsByRank.length === 3 && subCardsByRank !== cardsByRank)
+          dealtHands[Hand.FullHouse].push([...cardsByRank, ...subCardsByRank.slice(0, 2)])
       })
     }
     if (cardsByRank.length === 2) dealtHands[Hand.Pair].push(cardsByRank)

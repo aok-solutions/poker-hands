@@ -1,9 +1,9 @@
-import { getHands, Hand } from "components/PokerHand"
 import { Rank, Suit } from "components/PlayingCard"
+import { getHands, Hand } from "components/PokerHand"
 
 describe("PokerHand.getHands", () => {
   describe("with no major hands", () => {
-    let communityCards = [
+    const communityCards = [
       { rank: Rank.Two, suit: Suit.Clubs },
       { rank: Rank.Five, suit: Suit.Diamonds },
       { rank: Rank.Seven, suit: Suit.Hearts },
@@ -11,7 +11,7 @@ describe("PokerHand.getHands", () => {
       { rank: Rank.King, suit: Suit.Clubs }
     ]
 
-    let holeCards = [
+    const holeCards = [
       { rank: Rank.Jack, suit: Suit.Spades },
       { rank: Rank.Three, suit: Suit.Hearts }
     ]
@@ -24,7 +24,7 @@ describe("PokerHand.getHands", () => {
   })
 
   describe("with two cards of the same rank", () => {
-    let communityCards = [
+    const communityCards = [
       { rank: Rank.Two, suit: Suit.Clubs },
       { rank: Rank.Five, suit: Suit.Diamonds },
       { rank: Rank.Seven, suit: Suit.Hearts },
@@ -32,7 +32,7 @@ describe("PokerHand.getHands", () => {
       { rank: Rank.Jack, suit: Suit.Diamonds }
     ]
 
-    let holeCards = [
+    const holeCards = [
       { rank: Rank.King, suit: Suit.Clubs },
       { rank: Rank.Three, suit: Suit.Hearts }
     ]
@@ -47,7 +47,7 @@ describe("PokerHand.getHands", () => {
 
   describe("with two sets of two cards of the same rank", () => {
     it("returns two pair", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.Queen, suit: Suit.Hearts },
         { rank: Rank.Two, suit: Suit.Diamonds },
         { rank: Rank.King, suit: Suit.Hearts },
@@ -55,7 +55,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Queen, suit: Suit.Diamonds }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.Eight, suit: Suit.Hearts },
         { rank: Rank.Eight, suit: Suit.Clubs }
       ]
@@ -69,7 +69,7 @@ describe("PokerHand.getHands", () => {
     })
 
     it("returns two pair", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.Nine, suit: Suit.Hearts },
         { rank: Rank.Eight, suit: Suit.Clubs },
         { rank: Rank.King, suit: Suit.Hearts },
@@ -77,7 +77,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Queen, suit: Suit.Clubs }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.Eight, suit: Suit.Hearts },
         { rank: Rank.Queen, suit: Suit.Hearts }
       ]
@@ -91,7 +91,7 @@ describe("PokerHand.getHands", () => {
     })
 
     it("returns two pair", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.Ace, suit: Suit.Hearts },
         { rank: Rank.Ten, suit: Suit.Diamonds },
         { rank: Rank.Eight, suit: Suit.Hearts },
@@ -99,7 +99,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Ace, suit: Suit.Clubs }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.Ten, suit: Suit.Hearts },
         { rank: Rank.Five, suit: Suit.Hearts }
       ]
@@ -115,7 +115,7 @@ describe("PokerHand.getHands", () => {
   })
 
   describe("with three cards of the same rank", () => {
-    let communityCards = [
+    const communityCards = [
       { rank: Rank.Two, suit: Suit.Clubs },
       { rank: Rank.Five, suit: Suit.Diamonds },
       { rank: Rank.Seven, suit: Suit.Hearts },
@@ -123,7 +123,7 @@ describe("PokerHand.getHands", () => {
       { rank: Rank.Jack, suit: Suit.Diamonds }
     ]
 
-    let holeCards = [
+    const holeCards = [
       { rank: Rank.King, suit: Suit.Hearts },
       { rank: Rank.King, suit: Suit.Clubs }
     ]
@@ -137,7 +137,7 @@ describe("PokerHand.getHands", () => {
     })
 
     describe("with another two cards of the same rank", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.Ace, suit: Suit.Clubs },
         { rank: Rank.Seven, suit: Suit.Hearts },
         { rank: Rank.Ace, suit: Suit.Diamonds },
@@ -145,7 +145,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Two, suit: Suit.Diamonds }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.King, suit: Suit.Hearts },
         { rank: Rank.King, suit: Suit.Clubs }
       ]
@@ -161,7 +161,7 @@ describe("PokerHand.getHands", () => {
       })
 
       it("returns a full house", () => {
-        let communityCards = [
+        const communityCards = [
           { rank: Rank.Ace, suit: Suit.Clubs },
           { rank: Rank.Queen, suit: Suit.Hearts },
           { rank: Rank.King, suit: Suit.Diamonds },
@@ -169,7 +169,7 @@ describe("PokerHand.getHands", () => {
           { rank: Rank.Queen, suit: Suit.Diamonds }
         ]
 
-        let holeCards = [
+        const holeCards = [
           { rank: Rank.King, suit: Suit.Hearts },
           { rank: Rank.Queen, suit: Suit.Clubs }
         ]
@@ -186,7 +186,7 @@ describe("PokerHand.getHands", () => {
   })
 
   describe("with four cards of the same rank", () => {
-    let communityCards = [
+    const communityCards = [
       { rank: Rank.Two, suit: Suit.Clubs },
       { rank: Rank.King, suit: Suit.Spades },
       { rank: Rank.King, suit: Suit.Diamonds },
@@ -194,7 +194,7 @@ describe("PokerHand.getHands", () => {
       { rank: Rank.Seven, suit: Suit.Hearts }
     ]
 
-    let holeCards = [
+    const holeCards = [
       { rank: Rank.King, suit: Suit.Hearts },
       { rank: Rank.King, suit: Suit.Clubs }
     ]
@@ -210,7 +210,7 @@ describe("PokerHand.getHands", () => {
   })
 
   describe("with five cards of the same suit", () => {
-    let communityCards = [
+    const communityCards = [
       { rank: Rank.Two, suit: Suit.Clubs },
       { rank: Rank.Two, suit: Suit.Spades },
       { rank: Rank.King, suit: Suit.Spades },
@@ -218,7 +218,7 @@ describe("PokerHand.getHands", () => {
       { rank: Rank.Three, suit: Suit.Clubs }
     ]
 
-    let holeCards = [
+    const holeCards = [
       { rank: Rank.Eight, suit: Suit.Spades },
       { rank: Rank.Three, suit: Suit.Spades }
     ]
@@ -235,7 +235,7 @@ describe("PokerHand.getHands", () => {
   })
 
   describe("with five sequentially ranking cards", () => {
-    let communityCards = [
+    const communityCards = [
       { rank: Rank.Two, suit: Suit.Clubs },
       { rank: Rank.Queen, suit: Suit.Clubs },
       { rank: Rank.Nine, suit: Suit.Spades },
@@ -243,7 +243,7 @@ describe("PokerHand.getHands", () => {
       { rank: Rank.Six, suit: Suit.Diamonds }
     ]
 
-    let holeCards = [
+    const holeCards = [
       { rank: Rank.Jack, suit: Suit.Hearts },
       { rank: Rank.Ten, suit: Suit.Diamonds }
     ]
@@ -259,7 +259,7 @@ describe("PokerHand.getHands", () => {
     })
 
     it("returns a straight", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.Six, suit: Suit.Clubs },
         { rank: Rank.Ten, suit: Suit.Spades },
         { rank: Rank.Eight, suit: Suit.Diamonds },
@@ -267,7 +267,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Ace, suit: Suit.Spades }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.Four, suit: Suit.Diamonds },
         { rank: Rank.Seven, suit: Suit.Spades }
       ]
@@ -282,7 +282,7 @@ describe("PokerHand.getHands", () => {
     })
 
     it("returns a straight", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.King, suit: Suit.Clubs },
         { rank: Rank.Six, suit: Suit.Clubs },
         { rank: Rank.Five, suit: Suit.Clubs },
@@ -290,7 +290,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Four, suit: Suit.Diamonds }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.Eight, suit: Suit.Spades },
         { rank: Rank.Jack, suit: Suit.Hearts }
       ]
@@ -305,7 +305,7 @@ describe("PokerHand.getHands", () => {
     })
 
     it("returns a straight", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.Two, suit: Suit.Spades },
         { rank: Rank.Six, suit: Suit.Clubs },
         { rank: Rank.Five, suit: Suit.Clubs },
@@ -313,7 +313,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Four, suit: Suit.Diamonds }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.Six, suit: Suit.Spades },
         { rank: Rank.Four, suit: Suit.Hearts }
       ]
@@ -329,7 +329,7 @@ describe("PokerHand.getHands", () => {
 
     describe("with an Ace high", () => {
       it("does not return a royal flush", () => {
-        let communityCards = [
+        const communityCards = [
           { rank: Rank.Two, suit: Suit.Clubs },
           { rank: Rank.King, suit: Suit.Spades },
           { rank: Rank.Jack, suit: Suit.Clubs },
@@ -337,7 +337,7 @@ describe("PokerHand.getHands", () => {
           { rank: Rank.Six, suit: Suit.Diamonds }
         ]
 
-        let holeCards = [
+        const holeCards = [
           { rank: Rank.Ace, suit: Suit.Hearts },
           { rank: Rank.Ten, suit: Suit.Diamonds }
         ]
@@ -353,7 +353,7 @@ describe("PokerHand.getHands", () => {
     })
 
     describe("with the same suit", () => {
-      let communityCards = [
+      const communityCards = [
         { rank: Rank.Two, suit: Suit.Clubs },
         { rank: Rank.Queen, suit: Suit.Spades },
         { rank: Rank.Ten, suit: Suit.Spades },
@@ -361,7 +361,7 @@ describe("PokerHand.getHands", () => {
         { rank: Rank.Eight, suit: Suit.Spades }
       ]
 
-      let holeCards = [
+      const holeCards = [
         { rank: Rank.Jack, suit: Suit.Spades },
         { rank: Rank.Nine, suit: Suit.Spades }
       ]
@@ -377,7 +377,7 @@ describe("PokerHand.getHands", () => {
       })
 
       describe("with an Ace high", () => {
-        let communityCards = [
+        const communityCards = [
           { rank: Rank.Two, suit: Suit.Clubs },
           { rank: Rank.King, suit: Suit.Spades },
           { rank: Rank.Ace, suit: Suit.Spades },
@@ -385,7 +385,7 @@ describe("PokerHand.getHands", () => {
           { rank: Rank.Six, suit: Suit.Diamonds }
         ]
 
-        let holeCards = [
+        const holeCards = [
           { rank: Rank.Jack, suit: Suit.Spades },
           { rank: Rank.Ten, suit: Suit.Spades }
         ]
