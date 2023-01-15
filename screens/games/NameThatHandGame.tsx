@@ -1,17 +1,16 @@
 import { FontAwesome } from "@expo/vector-icons"
-import { useEffect, useState } from "react"
-import { Pressable } from "react-native"
-import { Button, Modal, Text, View } from "react-native-ui-lib"
-import { createMachine } from "xstate"
 import { useMachine } from "@xstate/react"
-
 import { Card, displayCard, displayCardResult, pokerCards } from "components/PlayingCard"
 import { getHands, getHighHand, Hand } from "components/PokerHand"
 import ScrollHandPicker from "components/ScrollHandPicker"
 import { Timer } from "components/Timer"
 import Colors from "constants/Colors"
 import useColorScheme from "hooks/useColorScheme"
+import { useEffect, useState } from "react"
+import { Pressable } from "react-native"
+import { Button, Colors as UiColors, Modal, Text, View } from "react-native-ui-lib"
 import { RootTabScreenProps } from "types"
+import { createMachine } from "xstate"
 
 const fullDeck = (): Card[] => {
   const deck: Card[] = []
@@ -35,7 +34,7 @@ function shuffle(array: any) {
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 const gameStateMachine = createMachine({
-  initial: "ended",
+  initial: "paused",
   states: {
     playing: {
       on: {
@@ -67,13 +66,13 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
   const [timer, setTimer] = useState<number>(1000)
-  const [showModal, setShowModal] = useState(true)
+  const [showStartModal, setShowStartModal] = useState(true)
+  const [showPausedModal, setShowPausedModal] = useState(false)
 
   const [state, send] = useMachine(gameStateMachine)
 
-  const isPlaying = state.value === "playing"
-  const isPaused = state.value === "paused"
-  const isEnded = state.value === "ended"
+  const isPlaying = state.matches("playing")
+  const isEnded = state.matches("ended")
 
   const colorScheme = useColorScheme()
 
@@ -127,9 +126,13 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     return () => clearInterval(interval)
   })
 
+  useEffect(() => {
+    if (isEnded) navigation.navigate("Root", { screen: "Games" })
+  }, [isEnded])
+
   return (
-    <View flex paddingH-20 paddingT-20 paddingB-90 bg-white>
-      <Modal visible={showModal}>
+    <View flex paddingH-20 paddingT-20 paddingB-60 bg-white>
+      <Modal visible={showStartModal}>
         <View flex center>
           <View marginB-15>
             <Text $textDefault text40>
@@ -140,15 +143,67 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             link
             iconSource={() => <FontAwesome name="play-circle" color="#ff369b" size={80} />}
             onPress={() => {
-              setShowModal(false)
+              setShowStartModal(false)
               send("PLAY")
             }}
             size={Button.sizes.large}
           />
         </View>
       </Modal>
+      <Modal visible={showPausedModal}>
+        <View flex center>
+          <View marginB-15>
+            <Text $textDefault text40>
+              Paused
+            </Text>
+          </View>
+          <View>
+            <Button
+              label="Resume"
+              labelStyle={{ fontWeight: "800" }}
+              enableShadow
+              iconOnRight
+              iconSource={() => (
+                <FontAwesome name="play" color="white" size={20} style={{ marginLeft: 10 }} />
+              )}
+              style={{ marginBottom: 10 }}
+              onPress={() => {
+                setShowPausedModal(false)
+                send("PLAY")
+              }}
+            />
+            <Button
+              label="Exit"
+              labelStyle={{ fontWeight: "800" }}
+              enableShadow
+              backgroundColor={UiColors.$backgroundDangerHeavy}
+              iconOnRight
+              iconSource={() => (
+                <FontAwesome name="close" color="white" size={20} style={{ marginLeft: 10 }} />
+              )}
+              onPress={() => {
+                setTimer(1000)
+                setShowPausedModal(false)
+                send("END")
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
       <View flex-2 row spread>
-        <Timer time={timer} />
+        <View row centerV>
+          <Timer time={timer} />
+          <Button
+            link
+            iconSource={() => <FontAwesome name="pause" color={UiColors.grey20} size={30} />}
+            size={Button.sizes.medium}
+            style={{ marginLeft: 15 }}
+            onPress={() => {
+              setShowPausedModal(true)
+              send("PAUSE")
+            }}
+          />
+        </View>
       </View>
       {isAnswering ? (
         <>

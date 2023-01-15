@@ -7,16 +7,15 @@ import { FontAwesome } from "@expo/vector-icons"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import LinkingConfiguration from "navigation/LinkingConfiguration"
 import { ColorSchemeName } from "react-native"
 import { Colors } from "react-native-ui-lib"
-
 import CheatSheetModal from "screens/CheatSheetModal"
-import NotFoundScreen from "screens/NotFoundScreen"
 import GamesScreen from "screens/GamesScreen"
+import NotFoundScreen from "screens/NotFoundScreen"
 import PreferencesScreen from "screens/PreferencesScreen"
 import NameThatHandGame from "screens/games/NameThatHandGame"
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from "types"
-import LinkingConfiguration from "navigation/LinkingConfiguration"
+import { RootStackParamList, RootTabParamList } from "types"
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -49,10 +48,7 @@ function RootNavigator() {
       <Stack.Screen
         name="NameThatHandGame"
         component={NameThatHandGame}
-        options={({ navigation }: RootTabScreenProps<"NameThatHandGame">) => ({
-          title: "",
-          headerStyle: { shadowOpacity: 0, elevation: 0 }
-        })}
+        options={{ headerShown: false }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen

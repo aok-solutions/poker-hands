@@ -1,11 +1,9 @@
+import { FontAwesome } from "@expo/vector-icons"
+import chipsStackedImage from "assets/images/chips-stacked.png"
+import nameThatHandImage from "assets/images/name-that-hand.png"
 import { ScrollView } from "react-native"
 import { Button, Card, Text, View } from "react-native-ui-lib"
-
 import { RootTabScreenProps } from "types"
-import nameThatHandImage from "assets/images/name-that-hand.png"
-import chipsStackedImage from "assets/images/chips-stacked.png"
-import { FontAwesome } from "@expo/vector-icons"
-import * as React from "react"
 
 export default function GamesScreen({ navigation }: RootTabScreenProps<"Games">) {
   const borderRadius = 15
