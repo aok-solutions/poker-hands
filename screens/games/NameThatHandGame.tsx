@@ -34,6 +34,7 @@ function shuffle(array: any) {
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 const gameStateMachine = createMachine({
+  predictableActionArguments: true,
   initial: "paused",
   states: {
     playing: {
@@ -45,19 +46,22 @@ const gameStateMachine = createMachine({
     paused: {
       on: {
         PLAY: "playing",
-        END: "ended"
+        END: "ended",
+        EXIT: "exited"
       }
     },
     ended: {
       on: {
-        PLAY: "playing"
+        PLAY: "playing",
+        EXIT: "exited"
       }
-    }
+    },
+    exited: {}
   }
 })
 
 export default function NameThatHandGame({ navigation }: RootTabScreenProps<"NameThatHandGame">) {
-  const [deck, setDeck] = useState<Card[]>(fullDeck())
+  const [deck, setDeck] = useState<Card[]>(shuffle(fullDeck()))
   const [communityCards, setCommunityCards] = useState<Card[]>([])
   const [holeCards, setHoleCards] = useState<Card[]>([])
   const [highHand, setHighHand] = useState<Hand>()
@@ -68,11 +72,12 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [timer, setTimer] = useState<number>(1000)
   const [showStartModal, setShowStartModal] = useState(true)
   const [showPausedModal, setShowPausedModal] = useState(false)
+  const [showGameOverModal, setShowGameOverModal] = useState(false)
 
   const [state, send] = useMachine(gameStateMachine)
 
   const isPlaying = state.matches("playing")
-  const isEnded = state.matches("ended")
+  const isExited = state.matches("exited")
 
   const colorScheme = useColorScheme()
 
@@ -93,18 +98,23 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     const delayDuration = isAnswerCorrect ? 1000 : 3000
 
     await delay(delayDuration)
-    resumeGame()
+    await resumeGame()
   }
 
-  const resumeGame = () => {
-    shuffleDeck()
+  const resumeGame = async () => {
+    await shuffleDeck()
     setCorrectAnswer(undefined)
     setIsAnswering(true)
   }
 
-  useEffect(() => {
-    setDeck(shuffle(deck))
+  const resetGame = async () => {
+    await shuffleDeck()
+    setCorrectAnswer(undefined)
+    setIsAnswering(true)
+    setTimer(1000)
+  }
 
+  useEffect(() => {
     setHoleCards(deck.splice(0, 2))
     setCommunityCards(deck.splice(0, 5))
   }, [deck])
@@ -120,15 +130,18 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
       if (isAnswering && isPlaying) setTimer((time) => time - 1)
     }, 1)
     if (timer <= 0) {
-      setTimer(0)
-      clearInterval(interval)
+      resetGame().then(() => {
+        send("END")
+        setShowGameOverModal(true)
+        clearInterval(interval)
+      })
     }
     return () => clearInterval(interval)
   })
 
   useEffect(() => {
-    if (isEnded) navigation.navigate("Root", { screen: "Games" })
-  }, [isEnded])
+    if (isExited) navigation.navigate("Root", { screen: "Games" })
+  }, [isExited])
 
   return (
     <View flex paddingH-20 paddingT-20 paddingB-60 bg-white>
@@ -184,7 +197,47 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
               onPress={() => {
                 setTimer(1000)
                 setShowPausedModal(false)
-                send("END")
+                send("EXIT")
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
+      <Modal visible={showGameOverModal}>
+        <View flex center>
+          <View marginB-15>
+            <Text $textDefault text40>
+              Game Over
+            </Text>
+          </View>
+          <View>
+            <Button
+              label="Play Again"
+              labelStyle={{ fontWeight: "800" }}
+              enableShadow
+              iconOnRight
+              iconSource={() => (
+                <FontAwesome name="play" color="white" size={20} style={{ marginLeft: 10 }} />
+              )}
+              style={{ marginBottom: 10 }}
+              onPress={() => {
+                setShowGameOverModal(false)
+                send("PLAY")
+              }}
+            />
+            <Button
+              label="Exit"
+              labelStyle={{ fontWeight: "800" }}
+              enableShadow
+              backgroundColor={UiColors.$backgroundDangerHeavy}
+              iconOnRight
+              iconSource={() => (
+                <FontAwesome name="close" color="white" size={20} style={{ marginLeft: 10 }} />
+              )}
+              onPress={() => {
+                setTimer(1000)
+                setShowGameOverModal(false)
+                send("EXIT")
               }}
             />
           </View>
