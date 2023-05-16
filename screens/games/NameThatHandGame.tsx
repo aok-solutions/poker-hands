@@ -203,6 +203,20 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
               Paused
             </Text>
           </View>
+          <View
+            row
+            marginB-15
+            padding-20
+            centerV
+            style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
+          >
+            <Text $textDefault text20BO primary>
+              {score}
+            </Text>
+            <Text $textDefault text40BO grey40 marginL-5>
+              {highScore}
+            </Text>
+          </View>
           <View>
             <Button
               label="Resume"
@@ -241,6 +255,20 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
           <View marginB-15>
             <Text $textDefault text40>
               Game Over
+            </Text>
+          </View>
+          <View
+            row
+            marginB-15
+            padding-20
+            centerV
+            style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
+          >
+            <Text $textDefault text20BO primary>
+              {score}
+            </Text>
+            <Text $textDefault text40BO grey40 marginL-5>
+              {highScore}
             </Text>
           </View>
           <View>
@@ -294,7 +322,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
           <Text $textDefault text40BO primary>
             {score}
           </Text>
-          <Text $textDefault text60BO grey20 marginL-5>
+          <Text $textDefault text60BO grey40 marginL-5>
             {highScore}
           </Text>
         </View>
