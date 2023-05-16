@@ -3,7 +3,7 @@ import { useMachine } from "@xstate/react"
 import { Card, displayCard, displayCardResult, pokerCards } from "components/PlayingCard"
 import { getHands, getHighHand, Hand } from "components/PokerHand"
 import ScrollHandPicker from "components/ScrollHandPicker"
-import { Timer } from "components/Timer"
+import { GAME_DURATION, Timer } from "components/Timer"
 import Colors from "constants/Colors"
 import useColorScheme from "hooks/useColorScheme"
 import { useEffect, useState } from "react"
@@ -60,6 +60,19 @@ const gameStateMachine = createMachine({
   }
 })
 
+const scoreSheet: Map<string, number> = new Map([
+  [Hand[Hand.HighCard], 10],
+  [Hand[Hand.Pair], 20],
+  [Hand[Hand.TwoPair], 20],
+  [Hand[Hand.ThreeOfAKind], 100],
+  [Hand[Hand.Straight], 150],
+  [Hand[Hand.Flush], 200],
+  [Hand[Hand.FullHouse], 250],
+  [Hand[Hand.FourOfAKind], 400],
+  [Hand[Hand.StraightFlush], 800],
+  [Hand[Hand.RoyalFlush], 1000]
+])
+
 export default function NameThatHandGame({ navigation }: RootTabScreenProps<"NameThatHandGame">) {
   const [deck, setDeck] = useState<Card[]>(shuffle(fullDeck()))
   const [communityCards, setCommunityCards] = useState<Card[]>([])
@@ -69,7 +82,8 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [correctAnswer, setCorrectAnswer] = useState<string>()
   const [answerCorrect, setAnswerCorrect] = useState<boolean>(false)
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
-  const [timer, setTimer] = useState<number>(1000)
+  const [timer, setTimer] = useState<number>(GAME_DURATION)
+  const [score, setScore] = useState<number>(0)
   const [showStartModal, setShowStartModal] = useState(true)
   const [showPausedModal, setShowPausedModal] = useState(false)
   const [showGameOverModal, setShowGameOverModal] = useState(false)
@@ -85,15 +99,17 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const submitAnswer = async (answer: string) => {
     setIsAnswering(false)
 
-    answer = answer.trim().length === 0 ? "HighCard" : answer
-    const highestHand: string = highHand ? highHand.toString() : Hand.HighCard.toString()
+    answer = answer.trim().length === 0 ? Hand[Hand.HighCard] : answer
+    const highestHand: string = highHand ? highHand.toString() : Hand[Hand.HighCard]
     const isAnswerCorrect = answer === highestHand
 
     setCorrectAnswer(highestHand)
     setAnswerCorrect(isAnswerCorrect)
 
-    if (isAnswerCorrect) setTimer((time) => time + 200)
-    else setTimer((time) => time - 300)
+    if (isAnswerCorrect) {
+      setScore((prevScore) => prevScore + (scoreSheet.get(answer) ?? 0))
+      setTimer((time) => time + 200)
+    } else setTimer((time) => time - 300)
 
     const delayDuration = isAnswerCorrect ? 1000 : 3000
 
@@ -111,7 +127,8 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     await shuffleDeck()
     setCorrectAnswer(undefined)
     setIsAnswering(true)
-    setTimer(1000)
+    setTimer(GAME_DURATION)
+    setScore(0)
   }
 
   useEffect(() => {
@@ -256,6 +273,11 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
               send("PAUSE")
             }}
           />
+        </View>
+        <View row centerV>
+          <Text $textDefault text40BO primary>
+            {score}
+          </Text>
         </View>
       </View>
       {isAnswering ? (

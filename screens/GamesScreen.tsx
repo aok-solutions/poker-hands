@@ -20,7 +20,7 @@ export default function GamesScreen({ navigation }: RootTabScreenProps<"Games">)
                 Name That Hand
               </Text>
               <Text text70 $textDefault>
-                Select the possible hand combinations!
+                Select the highest possible hand combination!
               </Text>
               <View row>
                 <Button

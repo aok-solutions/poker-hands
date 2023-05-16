@@ -6,13 +6,15 @@ type Props = {
   time: number
 }
 
+export const GAME_DURATION = 1000
+
 export const Timer = ({ time }: Props) => {
   const [timeRemaining, setTimeRemaining] = useState<number>()
 
   useEffect(() => {
     let timeLeft: number
 
-    if (time > 1000) timeLeft = 1000
+    if (time > GAME_DURATION) timeLeft = GAME_DURATION
     else if (time < 0) timeLeft = 0
     else timeLeft = time
 
