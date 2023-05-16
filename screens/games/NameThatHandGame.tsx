@@ -1,4 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useMachine } from "@xstate/react"
 import { Card, displayCard, displayCardResult, pokerCards } from "components/PlayingCard"
 import { getHands, getHighHand, Hand } from "components/PokerHand"
@@ -84,6 +85,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
   const [timer, setTimer] = useState<number>(GAME_DURATION)
   const [score, setScore] = useState<number>(0)
+  const [highScore, setHighScore] = useState<number>(0)
   const [showStartModal, setShowStartModal] = useState(true)
   const [showPausedModal, setShowPausedModal] = useState(false)
   const [showGameOverModal, setShowGameOverModal] = useState(false)
@@ -132,6 +134,10 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   }
 
   useEffect(() => {
+    AsyncStorage.getItem("highScore").then((value) => setHighScore(Number(value) ?? 0))
+  })
+
+  useEffect(() => {
     setHoleCards(deck.splice(0, 2))
     setCommunityCards(deck.splice(0, 5))
   }, [deck])
@@ -147,8 +153,9 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
       if (isAnswering && isPlaying) setTimer((time) => time - 1)
     }, 1)
     if (timer <= 0) {
-      resetGame().then(() => {
+      resetGame().then(async () => {
         send("END")
+        if (score > highScore) await AsyncStorage.setItem("highScore", score.toString())
         setShowGameOverModal(true)
         clearInterval(interval)
       })
@@ -277,6 +284,9 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
         <View row centerV>
           <Text $textDefault text40BO primary>
             {score}
+          </Text>
+          <Text $textDefault text50BO grey20 marginL-5>
+            {highScore}
           </Text>
         </View>
       </View>
