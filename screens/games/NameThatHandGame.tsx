@@ -109,7 +109,17 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     setAnswerCorrect(isAnswerCorrect)
 
     if (isAnswerCorrect) {
-      setScore((prevScore) => prevScore + (scoreSheet.get(answer) ?? 0))
+      setScore((prevScore) => {
+        const answerValue = scoreSheet.get(answer) ?? 0
+        const newScore = prevScore + answerValue
+
+        if (newScore > highScore) {
+          AsyncStorage.setItem("highScore", newScore.toString())
+          setHighScore(newScore)
+        }
+
+        return newScore
+      })
       setTimer((time) => time + 200)
     } else setTimer((time) => time - 300)
 
@@ -153,9 +163,8 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
       if (isAnswering && isPlaying) setTimer((time) => time - 1)
     }, 1)
     if (timer <= 0) {
-      resetGame().then(async () => {
+      resetGame().then(() => {
         send("END")
-        if (score > highScore) await AsyncStorage.setItem("highScore", score.toString())
         setShowGameOverModal(true)
         clearInterval(interval)
       })
@@ -285,7 +294,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
           <Text $textDefault text40BO primary>
             {score}
           </Text>
-          <Text $textDefault text50BO grey20 marginL-5>
+          <Text $textDefault text60BO grey20 marginL-5>
             {highScore}
           </Text>
         </View>
