@@ -43,14 +43,14 @@ export default function GamesScreen({ navigation }: RootTabScreenProps<"Games">)
             <Card.Section
               flex-2
               imageSource={nameThatHandImage}
-              imageStyle={{ width: "100%", height: 180 }}
+              imageStyle={{ width: "100%", height: 220 }}
             />
           </Card>
           <Card row marginB-30 borderRadius={borderRadius}>
             <Card.Section
               flex-2
               imageSource={chipsStackedImage}
-              imageStyle={{ width: "100%", height: 180 }}
+              imageStyle={{ width: "100%", height: 220 }}
             />
             <View flex-3 padding-20>
               <Text text60 $textDefault>
