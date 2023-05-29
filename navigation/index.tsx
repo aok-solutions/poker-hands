@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons"
+import { FontAwesome, Ionicons } from "@expo/vector-icons"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -12,8 +12,8 @@ import { ColorSchemeName } from "react-native"
 import { Colors } from "react-native-ui-lib"
 import CheatSheetModal from "screens/CheatSheetModal"
 import GamesScreen from "screens/GamesScreen"
+import StatsScreen from "screens/StatsScreen"
 import NotFoundScreen from "screens/NotFoundScreen"
-import PreferencesScreen from "screens/PreferencesScreen"
 import NameThatHandGame from "screens/games/NameThatHandGame"
 import { RootStackParamList, RootTabParamList } from "types"
 
@@ -86,12 +86,12 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Preferences"
-        component={PreferencesScreen}
+        name="Stats"
+        component={StatsScreen}
         options={{
           title: "",
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />
+          headerStyle: { shadowOpacity: 0, elevation: 0 },
+          tabBarIcon: ({ color }) => <Ionicons name="stats-chart" size={40} color={color} />
         }}
       />
     </BottomTab.Navigator>
