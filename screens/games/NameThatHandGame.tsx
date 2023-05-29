@@ -12,6 +12,7 @@ import { Pressable } from "react-native"
 import { Button, Colors as UiColors, Modal, Text, View } from "react-native-ui-lib"
 import { RootTabScreenProps } from "types"
 import { createMachine } from "xstate"
+import { Score } from "./Score"
 
 const fullDeck = (): Card[] => {
   const deck: Card[] = []
@@ -140,7 +141,6 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     setCorrectAnswer(undefined)
     setIsAnswering(true)
     setTimer(GAME_DURATION)
-    setScore(0)
   }
 
   useEffect(() => {
@@ -210,12 +210,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             centerV
             style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
           >
-            <Text $textDefault text20BO primary>
-              {score}
-            </Text>
-            <Text $textDefault text40BO grey40 marginL-5>
-              {highScore}
-            </Text>
+            <Score score={score} highScore={highScore} />
           </View>
           <View>
             <Button
@@ -264,12 +259,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             centerV
             style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
           >
-            <Text $textDefault text20BO primary>
-              {score}
-            </Text>
-            <Text $textDefault text40BO grey40 marginL-5>
-              {highScore}
-            </Text>
+            <Score score={score} highScore={highScore} />
           </View>
           <View>
             <Button
@@ -282,6 +272,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
               )}
               style={{ marginBottom: 10 }}
               onPress={() => {
+                setScore(0)
                 setShowGameOverModal(false)
                 send("PLAY")
               }}
@@ -319,12 +310,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
           />
         </View>
         <View row centerV>
-          <Text $textDefault text40BO primary>
-            {score}
-          </Text>
-          <Text $textDefault text60BO grey40 marginL-5>
-            {highScore}
-          </Text>
+          <Score score={score} highScore={highScore} />
         </View>
       </View>
       {isAnswering ? (
