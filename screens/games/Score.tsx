@@ -5,15 +5,13 @@ type Props = {
   highScore: number
 }
 
-export const Score = ({ score, highScore }: Props) => {
-  return (
-    <>
-      <Text $textDefault text40BO primary>
-        {score}
-      </Text>
-      <Text $textDefault text60BO grey40 marginL-5>
-        {highScore}
-      </Text>
-    </>
-  )
-}
+export const Score = ({ score, highScore }: Props) => (
+  <>
+    <Text $textDefault text40BO primary>
+      {score}
+    </Text>
+    <Text $textDefault text60BO grey40 marginL-5>
+      {highScore}
+    </Text>
+  </>
+)
