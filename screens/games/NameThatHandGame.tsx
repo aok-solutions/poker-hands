@@ -10,8 +10,10 @@ import useColorScheme from "hooks/useColorScheme"
 import { useEffect, useState } from "react"
 import { Pressable } from "react-native"
 import { Button, Colors as UiColors, Modal, Text, View } from "react-native-ui-lib"
+import { ScoreProvider } from "screens/games/ScoreContext"
 import { RootTabScreenProps } from "types"
 import { createMachine } from "xstate"
+
 import { Score } from "./Score"
 
 const fullDeck = (): Card[] => {
@@ -207,7 +209,9 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             centerV
             style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
           >
-            <Score score={score} highScore={highScore} />
+            <ScoreProvider>
+              <Score score={score} />
+            </ScoreProvider>
           </View>
           <View>
             <Button
@@ -256,7 +260,9 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             centerV
             style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
           >
-            <Score score={score} highScore={highScore} />
+            <ScoreProvider>
+              <Score score={score} />
+            </ScoreProvider>
           </View>
           <View>
             <Button
@@ -307,7 +313,9 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
           />
         </View>
         <View row centerV>
-          <Score score={score} highScore={highScore} />
+          <ScoreProvider>
+            <Score score={score} />
+          </ScoreProvider>
         </View>
       </View>
       {isAnswering ? (
