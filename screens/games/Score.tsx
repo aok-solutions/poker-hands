@@ -1,6 +1,6 @@
+import { ScoreContext, Value } from "components/ScoreContext"
 import { useContext } from "react"
 import { Text } from "react-native-ui-lib"
-import { ScoreContext, Value } from "screens/games/ScoreContext"
 
 type Props = {
   score: number

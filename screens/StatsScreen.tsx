@@ -1,14 +1,10 @@
-import { Card, Text, View } from "react-native-ui-lib"
+import { ScoreContext } from "components/ScoreContext"
+import { useContext } from "react"
 import { ScrollView } from "react-native"
-import { useEffect, useState } from "react"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Card, Text, View } from "react-native-ui-lib"
 
 export default function StatsScreen() {
-  const [highScore, setHighScore] = useState<number>(0)
-
-  useEffect(() => {
-    AsyncStorage.getItem("highScore").then((value) => setHighScore(Number(value) ?? 0))
-  })
+  const { highScore } = useContext(ScoreContext)
 
   return (
     <View flex backgroundColor="white">

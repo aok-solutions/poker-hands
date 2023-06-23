@@ -6,7 +6,7 @@ export type Value = {
   setHighScore: (score: number) => void
 }
 
-export const ScoreContext = createContext<Value | null>(null)
+export const ScoreContext = createContext<Value>({} as Value)
 
 type Props = {
   children: ReactNode

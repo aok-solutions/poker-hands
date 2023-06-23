@@ -3,14 +3,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useMachine } from "@xstate/react"
 import { Card, displayCard, displayCardResult, pokerCards } from "components/PlayingCard"
 import { getHands, getHighHand, Hand } from "components/PokerHand"
+import { ScoreContext, Value } from "components/ScoreContext"
 import ScrollHandPicker from "components/ScrollHandPicker"
 import { GAME_DURATION, Timer } from "components/Timer"
 import Colors from "constants/Colors"
 import useColorScheme from "hooks/useColorScheme"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Pressable } from "react-native"
 import { Button, Colors as UiColors, Modal, Text, View } from "react-native-ui-lib"
-import { ScoreProvider } from "screens/games/ScoreContext"
 import { RootTabScreenProps } from "types"
 import { createMachine } from "xstate"
 
@@ -88,11 +88,11 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [isAnswering, setIsAnswering] = useState<boolean>(true)
   const [timer, setTimer] = useState<number>(GAME_DURATION)
   const [score, setScore] = useState<number>(0)
-  const [highScore, setHighScore] = useState<number>(0)
   const [showStartModal, setShowStartModal] = useState(true)
   const [showPausedModal, setShowPausedModal] = useState(false)
   const [showGameOverModal, setShowGameOverModal] = useState(false)
 
+  const { highScore, setHighScore } = useContext(ScoreContext)
   const [state, send] = useMachine(gameStateMachine)
 
   const isPlaying = state.matches("playing")
@@ -137,10 +137,6 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     setIsAnswering(true)
     setTimer(GAME_DURATION)
   }
-
-  useEffect(() => {
-    AsyncStorage.getItem("highScore").then((value) => setHighScore(Number(value) ?? 0))
-  })
 
   useEffect(() => {
     setHoleCards(deck.splice(0, 2))
@@ -209,9 +205,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             centerV
             style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
           >
-            <ScoreProvider>
-              <Score score={score} />
-            </ScoreProvider>
+            <Score score={score} />
           </View>
           <View>
             <Button
@@ -260,9 +254,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
             centerV
             style={{ borderRadius: 15, borderWidth: 1, borderColor: "grey" }}
           >
-            <ScoreProvider>
-              <Score score={score} />
-            </ScoreProvider>
+            <Score score={score} />
           </View>
           <View>
             <Button
@@ -313,9 +305,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
           />
         </View>
         <View row centerV>
-          <ScoreProvider>
-            <Score score={score} />
-          </ScoreProvider>
+          <Score score={score} />
         </View>
       </View>
       {isAnswering ? (
