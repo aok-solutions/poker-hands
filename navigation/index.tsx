@@ -13,8 +13,8 @@ import { Colors } from "react-native-ui-lib"
 import CheatSheetModal from "screens/CheatSheetModal"
 import GamesScreen from "screens/GamesScreen"
 import NotFoundScreen from "screens/NotFoundScreen"
-import StatsScreen from "screens/StatsScreen"
 import NameThatHandGame from "screens/games/NameThatHandGame"
+import StatsScreen from "screens/stats/StatsScreen"
 import { RootStackParamList, RootTabParamList } from "types"
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {

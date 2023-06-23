@@ -3,7 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useMachine } from "@xstate/react"
 import { Card, displayCard, displayCardResult, pokerCards } from "components/PlayingCard"
 import { getHands, getHighHand, Hand } from "components/PokerHand"
-import { ScoreContext, Value } from "components/ScoreContext"
 import ScrollHandPicker from "components/ScrollHandPicker"
 import { GAME_DURATION, Timer } from "components/Timer"
 import Colors from "constants/Colors"
@@ -11,6 +10,7 @@ import useColorScheme from "hooks/useColorScheme"
 import { useContext, useEffect, useState } from "react"
 import { Pressable } from "react-native"
 import { Button, Colors as UiColors, Modal, Text, View } from "react-native-ui-lib"
+import { StatsContext } from "screens/stats/StatsContext"
 import { RootTabScreenProps } from "types"
 import { createMachine } from "xstate"
 
@@ -92,7 +92,7 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [showPausedModal, setShowPausedModal] = useState(false)
   const [showGameOverModal, setShowGameOverModal] = useState(false)
 
-  const { highScore, setHighScore } = useContext(ScoreContext)
+  const { highScore, setHighScore, highScoreBeaten, setHighScoreBeaten } = useContext(StatsContext)
   const [state, send] = useMachine(gameStateMachine)
 
   const isPlaying = state.matches("playing")
@@ -157,8 +157,14 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
       resetGame().then(() => {
         send("END")
 
-        if (score > (highScore ?? 0))
+        if (score > (highScore ?? 0)) {
           AsyncStorage.setItem("highScore", score.toString()).then(() => setHighScore(score))
+
+          const incrementHighScoreBeaten = highScoreBeaten + 1
+          AsyncStorage.setItem("highScoreBeaten", incrementHighScoreBeaten.toString()).then(() =>
+            setHighScoreBeaten(incrementHighScoreBeaten)
+          )
+        }
 
         setShowGameOverModal(true)
         clearInterval(interval)

@@ -1,13 +1,13 @@
-import { ScoreContext, Value } from "components/ScoreContext"
 import { useContext } from "react"
 import { Text } from "react-native-ui-lib"
+import { StatsContext, Value } from "screens/stats/StatsContext"
 
 type Props = {
   score: number
 }
 
 export const Score = ({ score }: Props) => {
-  const { highScore } = useContext(ScoreContext) as Value
+  const { highScore } = useContext(StatsContext) as Value
 
   return (
     <>

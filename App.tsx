@@ -1,9 +1,9 @@
-import { ScoreProvider } from "components/ScoreContext"
 import { StatusBar } from "expo-status-bar"
 import useCachedResources from "hooks/useCachedResources"
 import useColorScheme from "hooks/useColorScheme"
 import Navigation from "navigation"
 import { SafeAreaProvider } from "react-native-safe-area-context"
+import { StatsProvider } from "screens/stats/StatsContext"
 
 export default function App() {
   const isLoadingComplete = useCachedResources()
@@ -14,10 +14,10 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <ScoreProvider>
+        <StatsProvider>
           <Navigation colorScheme={colorScheme} />
           <StatusBar />
-        </ScoreProvider>
+        </StatsProvider>
       </SafeAreaProvider>
     )
   }

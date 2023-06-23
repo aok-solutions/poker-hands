@@ -1,10 +1,10 @@
-import { ScoreContext } from "components/ScoreContext"
 import { useContext } from "react"
 import { ScrollView } from "react-native"
 import { Card, Text, View } from "react-native-ui-lib"
+import { StatsContext } from "screens/stats/StatsContext"
 
 export default function StatsScreen() {
-  const { highScore } = useContext(ScoreContext)
+  const { highScore, highScoreBeaten } = useContext(StatsContext)
 
   return (
     <View flex backgroundColor="white">
@@ -20,6 +20,14 @@ export default function StatsScreen() {
               </Text>
               <Text text70BO $textDefault grey40>
                 {highScore}
+              </Text>
+            </View>
+            <View row spread marginB-20>
+              <Text text70BO $textDefault>
+                High Score Beaten
+              </Text>
+              <Text text70BO $textDefault grey40>
+                {highScoreBeaten}
               </Text>
             </View>
           </Card>
