@@ -4,7 +4,7 @@ import { Card, Text, View } from "react-native-ui-lib"
 import { StatsContext } from "screens/stats/StatsContext"
 
 export default function StatsScreen() {
-  const { highScore, highScoreBeaten } = useContext(StatsContext)
+  const { highScore, highScoreBeaten, gamesPlayed } = useContext(StatsContext)
 
   return (
     <View flex backgroundColor="white">
@@ -18,7 +18,7 @@ export default function StatsScreen() {
               <Text text70BO $textDefault>
                 High Score
               </Text>
-              <Text text70BO $textDefault grey40>
+              <Text text70BO $textDefault grey30>
                 {highScore}
               </Text>
             </View>
@@ -26,8 +26,16 @@ export default function StatsScreen() {
               <Text text70BO $textDefault>
                 High Score Beaten
               </Text>
-              <Text text70BO $textDefault grey40>
+              <Text text70BO $textDefault grey30>
                 {highScoreBeaten}
+              </Text>
+            </View>
+            <View row spread marginB-20>
+              <Text text70BO $textDefault>
+                Games Played
+              </Text>
+              <Text text70BO $textDefault grey30>
+                {gamesPlayed}
               </Text>
             </View>
           </Card>

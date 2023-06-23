@@ -6,6 +6,8 @@ export type Value = {
   setHighScore: (score: number) => void
   highScoreBeaten: number
   setHighScoreBeaten: (times: number) => void
+  gamesPlayed: number
+  setGamesPlayed: (times: number) => void
 }
 
 export const StatsContext = createContext<Value>({} as Value)
@@ -17,14 +19,25 @@ type Props = {
 export const StatsProvider = ({ children }: Props) => {
   const [highScore, setHighScore] = useState<number>(0)
   const [highScoreBeaten, setHighScoreBeaten] = useState<number>(0)
+  const [gamesPlayed, setGamesPlayed] = useState<number>(0)
 
   useEffect(() => {
     AsyncStorage.getItem("highScore").then((value) => setHighScore(Number(value) ?? 0))
     AsyncStorage.getItem("highScoreBeaten").then((value) => setHighScoreBeaten(Number(value) ?? 0))
+    AsyncStorage.getItem("gamesPlayed").then((value) => setGamesPlayed(Number(value) ?? 0))
   })
 
   return (
-    <StatsContext.Provider value={{ highScore, setHighScore, highScoreBeaten, setHighScoreBeaten }}>
+    <StatsContext.Provider
+      value={{
+        highScore,
+        setHighScore,
+        highScoreBeaten,
+        setHighScoreBeaten,
+        gamesPlayed,
+        setGamesPlayed
+      }}
+    >
       {children}
     </StatsContext.Provider>
   )

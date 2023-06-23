@@ -92,7 +92,15 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
   const [showPausedModal, setShowPausedModal] = useState(false)
   const [showGameOverModal, setShowGameOverModal] = useState(false)
 
-  const { highScore, setHighScore, highScoreBeaten, setHighScoreBeaten } = useContext(StatsContext)
+  const {
+    highScore,
+    setHighScore,
+    highScoreBeaten,
+    setHighScoreBeaten,
+    gamesPlayed,
+    setGamesPlayed
+  } = useContext(StatsContext)
+
   const [state, send] = useMachine(gameStateMachine)
 
   const isPlaying = state.matches("playing")
@@ -156,6 +164,11 @@ export default function NameThatHandGame({ navigation }: RootTabScreenProps<"Nam
     if (timer <= 0) {
       resetGame().then(() => {
         send("END")
+
+        const incrementGamesPlayed = gamesPlayed + 1
+        AsyncStorage.setItem("gamesPlayed", incrementGamesPlayed.toString()).then(() =>
+          setGamesPlayed(incrementGamesPlayed)
+        )
 
         if (score > (highScore ?? 0)) {
           AsyncStorage.setItem("highScore", score.toString()).then(() => setHighScore(score))
