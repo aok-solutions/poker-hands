@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Poker Hands",
+    "name": "Poker Hands - Simple Practice",
     "slug": "poker-hands",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,7 +18,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.codeblack.pokerhands"
+      "bundleIdentifier": "com.codeblack.pokerhands",
+      "infoPlist": {
+        "CFBundleDisplayName": "Poker Hands"
+      }
     },
     "android": {
       "adaptiveIcon": {
